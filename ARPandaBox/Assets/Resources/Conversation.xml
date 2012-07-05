@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Conversation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<Emotion name="FRIENDLY">
+
+	<Step name="ALONE">
+		<Sentence Category="GENERAL">Is there anybody here?</Sentence>
+		<Sentence Category="GENERAL">I'm alone right now...</Sentence>
+	</Step>
+
+	<Step name="GREETING">
+		<Sentence Category="GENERAL">Hello $[NAME]!</Sentence>
+		<Sentence Category="GENERAL">Hi $[NAME]!</Sentence>
+	</Step>
+	
+	<Step name="SPEAK">
+		<Sentence Category="WEATHER">I like when it's sunny</Sentence>
+		<Sentence Category="WEATHER">I like when it's raining</Sentence>
+		<Sentence Category="FEELING">I'm a little tired</Sentence>
+		<Sentence Category="FEELING">I'm fine right now!</Sentence>
+	</Step>
+	
+	<Step name="QUESTION">
+		<Sentence Category="FEELING">How are you?</Sentence>
+		<Sentence Category="SOUND">Did you heard that?</Sentence>
+		<Sentence Category="CHARACTER_NAME">what is my name?</Sentence>
+	</Step>
+	
+	<Step name="RESPONSE">
+		<Sentence Category="FEELING">Fine, thank you!</Sentence>
+		<Sentence Category="FEELING">Very good!</Sentence>
+		<Sentence Category="SOUND">Yes, I heard!</Sentence>
+		<Sentence Category="CHARACTER_NAME">$[NAME]!</Sentence>
+	</Step>
+	
+	<Step name="GOODBYE">
+		<Sentence Category="GENERAL">Goodbye!</Sentence>
+		<Sentence Category="GENERAL">See ya</Sentence>
+	</Step>
+	
+</Emotion>
+
+
+<Emotion name="WICKED">
+	
+	<Step name="ALONE">
+		<Sentence>Mouahahah!</Sentence>
+	</Step>
+
+	<Step name="GREETING">
+		<Sentence>What do you want?</Sentence>
+		<Sentence>Where am I?</Sentence>
+	</Step>
+	
+	<Step name="GOODBYE">
+		<Sentence>...</Sentence>
+	</Step>
+	
+</Emotion>
+
+</Conversation>
