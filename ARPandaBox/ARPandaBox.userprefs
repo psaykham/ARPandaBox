@@ -1,5 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Manager/GUIManager.cs">
     <Files>
       <File FileName="Assets/Scripts/Manager/EnvironmentManager.cs" Line="44" Column="6" />
@@ -8,6 +9,27 @@
       <File FileName="Assets/Scripts/Manager/ConversationManager.cs" Line="174" Column="1" />
       <File FileName="Assets/Scripts/Character/Character.cs" Line="70" Column="4" />
     </Files>
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Cube.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Cube.cs" Line="107" Column="54" />
+      <File FileName="Assets/Scripts/GUI/CameraDeviceMenu.cs" Line="199" Column="29" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="GUI" expanded="True" />
+                <Node name="Cube.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+>>>>>>> 55e49bb87a7296fb66b6ffe36aa31c85df2d1b5e
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

@@ -11,12 +11,9 @@ public class GUIManager : Singleton<GUIManager>
 	
 	private List<GameObject> m_messageInstanceList = new List<GameObject>();
 	private Rect m_menuArea;
-	private Ray m_ray;
-	private RaycastHit m_raycastHit;
 	
 	void Awake()
 	{
-		m_raycastHit = new RaycastHit();
 	}
 	
 	// Display a message to the screen
