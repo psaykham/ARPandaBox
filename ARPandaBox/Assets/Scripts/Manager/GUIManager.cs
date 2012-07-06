@@ -6,6 +6,7 @@ public class GUIManager : Singleton<GUIManager>
 {
 	public Transform ScreenPosition;
 	public GameObject m_dialogBoxPrefab;
+	
 	public Vector3 m_dialogBoxOffet;
 	
 	private List<GameObject> m_messageInstanceList = new List<GameObject>();
@@ -27,6 +28,14 @@ public class GUIManager : Singleton<GUIManager>
 		messageObject.GetComponentInChildren<SpriteText>().Text = message;
 		m_messageInstanceList.Add(messageObject);
 		StartCoroutine(UpdateMessage(messageObject));
+	}
+	
+	// Load the object into the environment
+	public void LoadEnvironment(string characterName, GameObject gameObject, Vector3 offset)
+	{
+		GameObject objectToLoad = (GameObject)Instantiate(gameObject);
+		objectToLoad.transform.parent = InteractionManager.Instance.CharacterList[characterName].Wireframe.transform;
+		objectToLoad.transform.localPosition = offset;
 	}
 	
 	// Simple  GUI with default system
