@@ -2,10 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Manager/GUIManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Manager/EnvironmentManager.cs" Line="25" Column="4" />
-      <File FileName="Assets/Scripts/Manager/InteractionManager.cs" Line="38" Column="2" />
-      <File FileName="Assets/Scripts/Manager/GUIManager.cs" Line="54" Column="3" />
-      <File FileName="Assets/Scripts/Manager/ConversationManager.cs" Line="64" Column="36" />
+      <File FileName="Assets/Scripts/Manager/EnvironmentManager.cs" Line="44" Column="6" />
+      <File FileName="Assets/Scripts/Manager/GUIManager.cs" Line="61" Column="35" />
+      <File FileName="Assets/Resources/Environment.xml" Line="18" Column="8" />
+      <File FileName="Assets/Scripts/Manager/ConversationManager.cs" Line="174" Column="1" />
+      <File FileName="Assets/Scripts/Character/Character.cs" Line="70" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
