@@ -1,9 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Cube.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Manager/ConversationManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Manager/InteractionManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Cube.cs" Line="20" Column="52" />
+      <File FileName="Assets/Scripts/Manager/ConversationManager.cs" Line="16" Column="11" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
