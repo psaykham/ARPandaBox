@@ -1,24 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Cube.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Character/Character.cs">
     <Files>
-      <File FileName="Assets/Scripts/Cube.cs" Line="107" Column="54" />
-      <File FileName="Assets/Scripts/GUI/CameraDeviceMenu.cs" Line="199" Column="29" />
+      <File FileName="Assets/Scripts/Manager/ConversationManager.cs" Line="16" Column="11" />
+      <File FileName="Assets/Scripts/Character/Character.cs" Line="64" Column="2" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="Scripts" expanded="True">
-                <Node name="GUI" expanded="True" />
-                <Node name="Cube.cs" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
