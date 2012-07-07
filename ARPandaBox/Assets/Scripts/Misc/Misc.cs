@@ -13,6 +13,13 @@ public class Misc
 		return prefabInstance;
 	}
 	
+	public static void SetRendererActive(Transform tr, bool isActive)
+	{
+		tr.renderer.enabled = isActive;
+		foreach(Transform child in tr)
+			SetRendererActive(child, isActive);
+	}
+	
 	// If the sprite are hidden at start we need to manipulate them for alpha
 	public static void SetVisibleSpriteHiddenAtStart(Transform tr)
 	{	
@@ -37,7 +44,6 @@ public class Misc
 				}
 			}
 		}
-		
 		
 		// Child
 		foreach(Transform child in tr)
