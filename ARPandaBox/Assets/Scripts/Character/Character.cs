@@ -68,7 +68,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		if(InteractionManager.Instance != null) {
 			InteractionManager.Instance.RemoveCharacter(Name); 
 			this.gameObject.SetActiveRecursively(!this.gameObject.active);
-			Debug.Log();
 		}
     }
 	
