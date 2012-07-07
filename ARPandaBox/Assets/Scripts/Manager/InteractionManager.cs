@@ -8,7 +8,6 @@ public class InteractionManager : Singleton<InteractionManager>
 	public Transform CharacterListTransfrom;
 	public GUIManager m_guiManager;
 	public ConversationManager m_conversationManager;
-	public EnvironmentManager m_environmentManager;
 	
 	private Dictionary<string, Character> m_characterList = new Dictionary<string, Character>();
 	public Dictionary<string, Character> CharacterList {get {return m_characterList;}}
@@ -17,7 +16,6 @@ public class InteractionManager : Singleton<InteractionManager>
 	{
 		Misc.InstantiateAsChild(m_guiManager, this);
 		Misc.InstantiateAsChild(m_conversationManager, this);
-		Misc.InstantiateAsChild(m_environmentManager, this);
 	}	
 	
 	void Start () 

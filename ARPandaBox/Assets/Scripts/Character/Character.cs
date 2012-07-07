@@ -65,10 +65,8 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	// Remove the character from the scene
     private void OnTrackingLost()
     {
-		if(InteractionManager.Instance != null) {
+		if(InteractionManager.Instance != null)
 			InteractionManager.Instance.RemoveCharacter(Name); 
-			this.gameObject.SetActiveRecursively(!this.gameObject.active);
-		}
     }
 	
 	// Wait that the InteractionManager is created
