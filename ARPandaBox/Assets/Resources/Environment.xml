@@ -34,5 +34,22 @@
 			<y>-0.5</y>
 			<z>4</z>
 		</Setting>
-	</Box>		
+	</Box>	
+	<Box name="Panda2">
+		<Setting name="TREE">
+			<x>0</x>
+			<y>-0.5</y>
+			<z>2.5</z>
+		</Setting>
+		<Setting name="WATER">
+			<x>-1</x>
+			<y>-0.5</y>
+			<z>1.5</z>
+		</Setting>
+		<Setting name="TERRAIN">
+			<x>1</x>
+			<y>-0.5</y>
+			<z>4</z>
+		</Setting>
+	</Box>			
 </Environment>

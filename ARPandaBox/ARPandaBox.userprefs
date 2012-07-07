@@ -1,9 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Character/Character.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Environment.xml">
     <Files>
-      <File FileName="Assets/Scripts/iPhoneGyroCam.js" Line="18" Column="1" />
-      <File FileName="Assets/Scripts/Character/Character.cs" Line="77" Column="45" />
+      <File FileName="Assets/Resources/Environment.xml" Line="38" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
