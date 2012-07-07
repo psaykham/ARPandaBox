@@ -1,0 +1,27 @@
+
+# Unity3D .gitignore file.
+#	 Store this file at the root of your local repository.
+
+.DS_Store
+._.DS_Store
+ARPandaBox/Library/AssetImportState
+ARPandaBox/Library/AssetServerCacheV3
+ARPandaBox/Library/FailedAssetImports.txt
+ARPandaBox/Library/ScriptAssemblies
+ARPandaBox/Library/ScriptMapper
+ARPandaBox/Library/assetDatabase3
+ARPandaBox/Library/cache
+ARPandaBox/Library/expandedItems
+ARPandaBox/Library/metadata
+ARPandaBox/Library/previews
+ARPandaBox/Library/guidmapper
+ARPandaBox/Library/InspectorExpandedItems.asset
+ARPandaBox/Temp
+*.csproj
+*.pidb
+*.sln
+*.userprefs
+*.mel
+*.mel.meta
+output_log.txt
+build
