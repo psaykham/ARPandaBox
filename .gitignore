@@ -17,6 +17,7 @@ ARPandaBox/Library/previews
 ARPandaBox/Library/guidmapper
 ARPandaBox/Library/InspectorExpandedItems.asset
 ARPandaBox/Temp
+*.unityproj
 *.csproj
 *.pidb
 *.sln
