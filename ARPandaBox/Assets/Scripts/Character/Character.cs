@@ -106,7 +106,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		UpdateEyes();
 		UpdateMouth();
-		print (m_hungrer);
 	}
 	
 	// Update pupil position
