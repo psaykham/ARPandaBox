@@ -12,17 +12,20 @@ public class Pickup : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision) 
 	{
-		Character character = collision.transform.parent.GetComponent<Character>();
-		if(character != null)
+		if(collision.transform.parent != null)
 		{
-			switch(m_type)
+			Character character = collision.transform.parent.GetComponent<Character>();
+			if(character != null)
 			{
-				case PickupType.FOOD:
-				character.Eat(m_amount);
-				break;
+				switch(m_type)
+				{
+					case PickupType.FOOD:
+					character.Eat(m_amount);
+					break;
+				}
+				
+				Destroy(gameObject);
 			}
-			
-			Destroy(gameObject);
 		}
 
     }

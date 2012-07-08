@@ -33,13 +33,16 @@ public class InteractionManager : Singleton<InteractionManager>
 	{
 		print ("AddCharacter");
 		if(!m_characterList.ContainsKey(character.Name))
+		{
 			m_characterList.Add(character.Name, character);
+			m_environmentManager.LoadEnvironment(character.Name);
+		}
 	}
 	
 	public void RemoveCharacter(string characterName)
 	{
+		ConversationManager.Instance.Remove(characterName);
+		EnvironmentManager.Instance.RemoveEnvironment(characterName);	
 		m_characterList.Remove(characterName);
-		if(ConversationManager.Instance != null)
-			ConversationManager.Instance.Remove(characterName);
 	}
 }

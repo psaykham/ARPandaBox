@@ -169,7 +169,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		yield return StartCoroutine(CheckInteractionManagerPresence());
 		m_isVisible = true;
 		InteractionManager.Instance.AddCharacter(this); 
-		EnvironmentManager.Instance.SetActiveEnvironmentIfExists(this);
 	}
 	
 	// Remove the character from the scene
@@ -179,7 +178,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		{
 			m_isVisible = false;
 			InteractionManager.Instance.RemoveCharacter(Name); 
-			EnvironmentManager.Instance.SetActiveEnvironmentIfExists(this);
 		}
     }
 	

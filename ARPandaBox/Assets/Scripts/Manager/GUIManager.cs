@@ -26,25 +26,7 @@ public class GUIManager : Singleton<GUIManager>
 		messageObject.transform.localPosition = m_dialogBoxOffet;
 		messageObject.GetComponentInChildren<SpriteText>().Text = message;
 		m_messageInstanceList.Add(messageObject);
-		StartCoroutine(UpdateMessage(messageObject));
-	}
-	
-	// Load the character environment
-	public void LoadEnvironment(Character character)
-	{
-		if(character.Environment) {
-			GameObject objectToLoad = (GameObject)Instantiate(character.Environment);
-			m_listOfCharactersEnvironment.Add(character.Name, objectToLoad);
-		}
-	}
-	
-	// Remove the character environment
-	public void SetActiveEnvironmentIfExists(Character character)
-	{
-		if(m_listOfCharactersEnvironment.ContainsKey(character.Name)) {
-			GameObject environmentObject = m_listOfCharactersEnvironment[character.Name];
-			environmentObject.SetActiveRecursively(!environmentObject.active);
-		}
+		StartCoroutine(RemoveMessage(messageObject));
 	}
 	
 	// Simple  GUI with default system
@@ -86,7 +68,7 @@ public class GUIManager : Singleton<GUIManager>
     }
 	
 	// Delete the message
-	private IEnumerator UpdateMessage(GameObject messageObject)
+	private IEnumerator RemoveMessage(GameObject messageObject)
 	{
 		yield return new WaitForSeconds(ConversationManager.Instance.m_timeInteraction - 0.1f);
 		m_messageInstanceList.Remove(messageObject);
