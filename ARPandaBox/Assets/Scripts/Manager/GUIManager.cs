@@ -46,11 +46,14 @@ public class GUIManager : Singleton<GUIManager>
 		// Activate / Desactivate Character present in the scene
         GUILayout.BeginArea(m_menuArea);
         GUILayout.BeginHorizontal(buttonGroupStyle);
-		foreach(Transform character in InteractionManager.Instance.CharacterListTransfrom)
+		if(InteractionManager.Instance != null)
 		{
-			if (GUILayout.Button("Toggle "+character.GetComponent<Character>().Name, buttonGroupStyle))
-        	{
-				character.gameObject.SetActiveRecursively(!character.gameObject.active);
+			foreach(Transform character in InteractionManager.Instance.CharacterListTransfrom)
+			{
+				if (GUILayout.Button("Toggle "+character.GetComponent<Character>().Name, buttonGroupStyle))
+	        	{
+					character.gameObject.SetActiveRecursively(!character.gameObject.active);
+				}
 			}
 		}
         GUILayout.EndHorizontal();
