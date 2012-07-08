@@ -3,33 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-public class EnvironmentManager : Singleton<EnvironmentManager> {
-	
-	private Dictionary<string, bool> m_characterEnvironmentIsLoaded = new Dictionary<string, bool>();
-	
-	void Start () {
-	}
-	
-	void Awake () {
-	}
-	
-	void Update () {
-		foreach(KeyValuePair<string, Character> kvp in InteractionManager.Instance.CharacterList)
+public class EnvironmentManager : Singleton<EnvironmentManager> 
+{
+	public void LoadEnvironment(string characterName)
+	{
+		// Load the character environment
+		Character character = InteractionManager.Instance.CharacterList[characterName];
+		if(character.Environment != null) 
 		{
-			if(!m_characterEnvironmentIsLoaded.ContainsKey(kvp.Key)) {
-				m_characterEnvironmentIsLoaded.Add(kvp.Key, true);			
-				LoadEnvironment(kvp.Value);
-			}
+			GameObject characterEnvironment = (GameObject)Instantiate(character.Environment, character.transform.position, Quaternion.identity);
+			characterEnvironment.name = "Environment";
+			characterEnvironment.transform.parent = character.transform;
 		}
 	}
 	
-	private void LoadEnvironment(Character character)
+	public void RemoveEnvironment(string characterName)
 	{
-		GUIManager.Instance.LoadEnvironment(character);
-	}
-	
-	public void SetActiveEnvironmentIfExists(Character character)
-	{
-		GUIManager.Instance.SetActiveEnvironmentIfExists(character);
+		Character character = InteractionManager.Instance.CharacterList[characterName];
+		GameObject characterEnvironnement = character.transform.Find("Environment").gameObject;
+		Destroy(characterEnvironnement);
 	}
 }
