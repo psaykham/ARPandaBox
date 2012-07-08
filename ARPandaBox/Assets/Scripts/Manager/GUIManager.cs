@@ -12,6 +12,8 @@ public class GUIManager : Singleton<GUIManager>
 	private List<GameObject> m_messageInstanceList = new List<GameObject>();
 	private Rect m_menuArea;
 	
+	private Dictionary<string, GameObject> m_listOfCharactersEnvironment = new Dictionary<string, GameObject>();
+	
 	void Awake()
 	{
 	}
@@ -27,12 +29,22 @@ public class GUIManager : Singleton<GUIManager>
 		StartCoroutine(UpdateMessage(messageObject));
 	}
 	
-	// Load the object into the environment
-	public void LoadEnvironment(string characterName, GameObject gameObject, Vector3 offset)
+	// Load the character environment
+	public void LoadEnvironment(Character character)
 	{
-		GameObject objectToLoad = (GameObject)Instantiate(gameObject);
-		objectToLoad.transform.parent = InteractionManager.Instance.CharacterList[characterName].Wireframe.transform;
-		objectToLoad.transform.localPosition = offset;
+		if(character.Environment) {
+			GameObject objectToLoad = (GameObject)Instantiate(character.Environment);
+			m_listOfCharactersEnvironment.Add(character.Name, objectToLoad);
+		}
+	}
+	
+	// Remove the character environment
+	public void SetActiveEnvironmentIfExists(Character character)
+	{
+		if(m_listOfCharactersEnvironment.ContainsKey(character.Name)) {
+			GameObject environmentObject = m_listOfCharactersEnvironment[character.Name];
+			environmentObject.SetActiveRecursively(!environmentObject.active);
+		}
 	}
 	
 	// Simple  GUI with default system
