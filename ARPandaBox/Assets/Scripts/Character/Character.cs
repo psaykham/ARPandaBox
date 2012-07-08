@@ -21,7 +21,19 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public ConversationManager.ConversationStep CurrentConversationStep {get {return m_currentConversationStep;} set{m_currentConversationStep=value;}}
     private TrackableBehaviour m_trackableBehaviour;
     
-	// Attributs
+	// Atributs
+	private int m_level = 1;
+	private int m_experience = 0;
+	
+	private float m_energy = 1f;
+	private float m_hungrer = 1f;
+	private float m_fun = 1f;
+	private float m_social = 1f;
+	private float m_bladder = 1f;
+	private float m_hygiene = 1f;
+	
+	// Shape
+	private bool m_isVisible = false;
 	private List<GameObject> m_eyeList = new List<GameObject>();
 	private UIStateToggleBtn m_mouth;
 	private Transform m_target;
@@ -43,10 +55,13 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			// Mouth
 			m_mouth = Shape.Find("Head/Mouth").GetComponent<UIStateToggleBtn>();
 		}
+		
+		InitNeeds();
 	}
 	
     void Start()
     {
+		// Init Trackable Behaviour
         m_trackableBehaviour = GetComponent<TrackableBehaviour>();
         if (m_trackableBehaviour)
         {
@@ -56,6 +71,20 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		StartCoroutine(EyeAlive());
     }
 	
+	// Init Needs
+	private void InitNeeds()
+	{
+		StartCoroutine(UpdateHunger());
+	}
+	
+	private IEnumerator UpdateHunger()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
+		Eat(-1);
+		yield return StartCoroutine(UpdateHunger());
+	}
+	
+	// Event trackable
     public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus)
     {
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
@@ -73,6 +102,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		UpdateEyes();
 		UpdateMouth();
+		print (m_hungrer);
 	}
 	
 	// Update pupil position
@@ -99,22 +129,30 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	
 	private IEnumerator EyeAlive()
 	{
-		print("EyeAlive");
-		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 500) / 100f);
-		SetVisibleEyes(false);
-		yield return new WaitForSeconds(0.25f);
-		SetVisibleEyes(true);
-		yield return StartCoroutine(EyeAlive());
+		if(m_isVisible)
+		{
+			print("EyeAlive");
+			yield return new WaitForSeconds(UnityEngine.Random.Range(100, 500) / 100f);
+			SetVisibleEyes(false);
+			yield return new WaitForSeconds(0.25f);
+			SetVisibleEyes(true);
+			yield return StartCoroutine(EyeAlive());
+		}
 		
 	}
 	
+	// Animation on eyes
 	private void SetVisibleEyes(bool isVisible)
 	{
 		for(int i=0; i<m_eyeList.Count; i++)
 			Misc.SetRendererActive(m_eyeList[i].transform, isVisible);
 	}
 	
-	
+	// Eat some food
+	public void Eat(int amount)
+	{
+		m_hungrer = Mathf.Clamp(m_hungrer + (amount / 100f), 0f, 1f);
+	}
 	
 	// Add the character for the interaction
     private void OnTrackingFound()
@@ -125,6 +163,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private IEnumerator OnTrackingFoundProcess()
 	{
 		yield return StartCoroutine(CheckInteractionManagerPresence());
+		m_isVisible = true;
 		InteractionManager.Instance.AddCharacter(this); 
 	}
 	
@@ -132,7 +171,10 @@ public class Character : MonoBehaviour, ITrackableEventHandler
     private void OnTrackingLost()
     {
 		if(InteractionManager.Instance != null)
+		{
+			m_isVisible = false;
 			InteractionManager.Instance.RemoveCharacter(Name); 
+		}
     }
 	
 	// Wait that the InteractionManager is created

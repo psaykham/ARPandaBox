@@ -29,6 +29,10 @@ public class GUIManager : Singleton<GUIManager>
 	// Simple  GUI with default system
 	void OnGUI()
 	{
+		GUILayout.BeginHorizontal();
+		GUILayout.Label(GameObject.FindGameObjectWithTag("MainCamera").transform.position.ToString());
+		GUILayout.EndHorizontal();
+		
 		ComputePosition();
 			
 		// Setup style for buttons.
