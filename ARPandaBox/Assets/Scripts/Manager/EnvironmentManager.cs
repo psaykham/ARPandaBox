@@ -6,7 +6,6 @@ using System.Xml;
 public class EnvironmentManager : Singleton<EnvironmentManager> {
 	
 	private Dictionary<string, bool> m_characterEnvironmentIsLoaded = new Dictionary<string, bool>();
-	public GameObject m_pandaEnvironnement;
 	
 	void Start () {
 	}
