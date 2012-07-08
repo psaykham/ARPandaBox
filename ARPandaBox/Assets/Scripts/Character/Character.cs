@@ -39,6 +39,10 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private Transform m_target;
 	public Transform Target { get {return m_target;} set{m_target = value;}}
 	
+	// Environnement correspondant
+	public GameObject m_environment;
+	public GameObject Environment {get{return m_environment;} set{m_environment = value;}}
+	
 	void Awake()
 	{	
 		// Pupil
@@ -165,6 +169,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		yield return StartCoroutine(CheckInteractionManagerPresence());
 		m_isVisible = true;
 		InteractionManager.Instance.AddCharacter(this); 
+		EnvironmentManager.Instance.SetActiveEnvironmentIfExists(this);
 	}
 	
 	// Remove the character from the scene
@@ -174,6 +179,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		{
 			m_isVisible = false;
 			InteractionManager.Instance.RemoveCharacter(Name); 
+			EnvironmentManager.Instance.SetActiveEnvironmentIfExists(this);
 		}
     }
 	
