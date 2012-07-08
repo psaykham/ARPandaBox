@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 591ae67f4dc79ca4c9309f684166bb10
+guid: b7a47376958554146bbbf8cb65415779
 TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
-    linearTexture: 1
+    linearTexture: 0
     correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
@@ -13,7 +13,7 @@ TextureImporter:
     mipMapFadeDistanceEnd: 3
   bumpmap:
     convertToNormalMap: 0
-    externalNormalMap: 1
+    externalNormalMap: 0
     heightScale: .25
     normalMapFilter: 0
   isReadable: 0
@@ -28,5 +28,5 @@ TextureImporter:
     wrapMode: -1
   nPOTScale: 1
   lightmap: 0
-  textureType: 1
+  textureType: -1
   buildTargetSettings: []
