@@ -50,9 +50,6 @@ public class GUIManager : Singleton<GUIManager>
 			{
 				if (GUILayout.Button("Toggle "+character.GetComponent<Character>().Name, buttonGroupStyle))
 	        	{
-					if(character.gameObject.active)
-						character.GetComponent<Character>().RemoveStatusBar();
-					
 					character.gameObject.SetActiveRecursively(!character.gameObject.active);
 				}
 			}

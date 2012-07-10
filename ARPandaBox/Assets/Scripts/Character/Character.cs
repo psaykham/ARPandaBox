@@ -204,6 +204,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	// Remove the character from the scene
     private void OnTrackingLost()
     {
+		RemoveStatusBar();
 		if(InteractionManager.Instance != null)
 		{
 			m_isVisible = false;
