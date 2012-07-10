@@ -12,12 +12,12 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	
  	enum StatusBarType
 	{
-		ENERGY,
 		HUNGER,
+		HYGIENE,
+		ENERGY,
+		BLADDER,
 		FUN,
 		SOCIAL,
-		BLADDER,
-		HYGIENE,
 	};
 	
 	public string Name;
@@ -55,7 +55,8 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	
 	// Status Bar
 	public GameObject m_statusBarPrefab;
-	private GameObject[] m_listStatusBar = new GameObject[6];
+	private GameObject[] m_listStatusBar = new GameObject[2];
+	private Coroutine statusBarCoRoutine = null;
 	
 	void Awake()
 	{	
@@ -74,7 +75,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			m_mouth = Shape.Find("Head/Mouth").GetComponent<UIStateToggleBtn>();
 		}
 		
-		InitNeeds();
+		//InitNeeds();
 	}
 	
     void Start()
@@ -86,8 +87,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
             m_trackableBehaviour.RegisterTrackableEventHandler(this);
         }
 		
-		// Init List of StatusBar
-		
 		StartCoroutine(EyeAlive());
     }
 	
@@ -95,6 +94,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private void InitNeeds()
 	{
 		StartCoroutine(UpdateHunger());
+		StartCoroutine(UpdateHygiene());
 	}
 	
 	private IEnumerator UpdateHunger()
@@ -102,6 +102,13 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
 		Eat(-1);
 		yield return StartCoroutine(UpdateHunger());
+	}
+	
+	private IEnumerator UpdateHygiene()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
+		Clean(-1);
+		yield return StartCoroutine(UpdateHygiene());
 	}
 	
 	// Event trackable
@@ -173,16 +180,23 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		m_hungrer = Mathf.Clamp(m_hungrer + (amount / 100f), 0f, 1f);
 	}
 	
+	// It cleans itself
+	public void Clean(int amount)
+	{
+		m_hygiene = Mathf.Clamp(m_hygiene + (amount / 100f), 0f, 1f);
+	}
+	
 	// Add the character for the interaction
     private void OnTrackingFound()
     {
 		StartCoroutine(OnTrackingFoundProcess());
-		StartCoroutine(UpdateStatusBar());
     }
 	
 	private IEnumerator OnTrackingFoundProcess()
 	{
 		yield return StartCoroutine(CheckInteractionManagerPresence());
+		InitNeeds();
+		CreateStatusBar();
 		m_isVisible = true;
 		InteractionManager.Instance.AddCharacter(this); 
 	}
@@ -190,6 +204,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	// Remove the character from the scene
     private void OnTrackingLost()
     {
+		RemoveStatusBar();
 		if(InteractionManager.Instance != null)
 		{
 			m_isVisible = false;
@@ -208,39 +223,72 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public IEnumerator UpdateStatusBar()
 	{
 		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
-		DisplayStatusBar();
-		yield return StartCoroutine(UpdateStatusBar());
-	}
-	
-	// Display all status bars
-	public void DisplayStatusBar()
-	{	
+		
 		if(m_statusBarPrefab != null) {
 			for(int i=0; i<m_listStatusBar.Length; i++) {
-				if(m_listStatusBar[i] == null) {
-					m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
-					m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
-					m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
-					if(i == 0) {
-						m_listStatusBar[i].transform.localPosition = new Vector3(10, 10, 0);
-					} else {
-						m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 60, 0);
-					}
+				if(m_listStatusBar[i] != null) {
+					Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
+					statusBarFull.localScale = 
+						GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
+							m_listStatusBar[i].transform.GetChild(2));
 				}
-				
-				Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
-				float currentBar = (GetCorrespondingAttributes(i) * statusBarFull.localScale.x) / 1F;
-				
-				if(currentBar < 0f)
-					currentBar = 0f;
-				if(currentBar > 1F)
-					currentBar = 1F;
-				
-				Vector3 scale = statusBarFull.localScale;
-				scale.x = currentBar;
-				statusBarFull.localScale = scale;
 			}
 		}
+		
+		yield return StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+	}
+	
+	// Create all status bar
+	public void CreateStatusBar()
+	{
+		if(m_statusBarPrefab != null) {
+			for(int i=0; i<m_listStatusBar.Length; i++) {
+				m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
+				m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
+				m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
+				if(i == 0) {
+					m_listStatusBar[i].transform.localPosition = new Vector3(10, 0, 0);
+				} else {
+					m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 30, 0);
+				}
+				
+				m_listStatusBar[i].transform.GetChild(1).localScale = 
+					GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
+						m_listStatusBar[i].transform.GetChild(2));
+			}
+		}
+		statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+	}
+	
+	// Returns the current status bar scale
+	private Vector3 GetCurrentStatusBarScale(float attributeValue, Transform statusBarFull)
+	{
+		float currentBar = (attributeValue * statusBarFull.localScale.x) / 1F;
+		
+		if(currentBar < 0f)
+			currentBar = 0f;
+		if(currentBar > 1F)
+			currentBar = 1F;
+		
+		Vector3 scale = statusBarFull.localScale;
+		scale.x = currentBar;
+		
+		return scale;
+	}
+	
+	// Remove the status bar from the screen
+	public void RemoveStatusBar()
+	{
+		if(statusBarCoRoutine != null) {
+			StopCoroutine("UpdateStatusBar");
+		}
+		
+		for(int i=0; i<m_listStatusBar.Length; i++) {
+			if(m_listStatusBar[i] != null) {
+				Destroy(m_listStatusBar[i]);
+			}
+		}
+		
 	}
 	
 	// Returns the corresponding attribute
