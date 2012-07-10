@@ -12,12 +12,12 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	
  	enum StatusBarType
 	{
-		ENERGY,
 		HUNGER,
+		HYGIENE,
+		ENERGY,
+		BLADDER,
 		FUN,
 		SOCIAL,
-		BLADDER,
-		HYGIENE,
 	};
 	
 	public string Name;
@@ -55,7 +55,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	
 	// Status Bar
 	public GameObject m_statusBarPrefab;
-	private GameObject[] m_listStatusBar = new GameObject[6];
+	private GameObject[] m_listStatusBar = new GameObject[2];
 	private Coroutine statusBarCoRoutine = null;
 	
 	void Awake()
@@ -86,8 +86,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
         {
             m_trackableBehaviour.RegisterTrackableEventHandler(this);
         }
-		
-		// Init List of StatusBar
 		
 		StartCoroutine(EyeAlive());
     }
@@ -178,7 +176,8 @@ public class Character : MonoBehaviour, ITrackableEventHandler
     private void OnTrackingFound()
     {
 		StartCoroutine(OnTrackingFoundProcess());
-		statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+		CreateStatusBar();
+		//statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
     }
 	
 	private IEnumerator OnTrackingFoundProcess()
@@ -196,7 +195,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			m_isVisible = false;
 			InteractionManager.Instance.RemoveCharacter(Name); 
 		}
-		RemoveStatusBar();
     }
 	
 	// Wait that the InteractionManager is created
@@ -210,39 +208,55 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public IEnumerator UpdateStatusBar()
 	{
 		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
-		DisplayStatusBar();
-		yield return StartCoroutine(UpdateStatusBar());
-	}
-	
-	// Display all status bars
-	public void DisplayStatusBar()
-	{	
+		
 		if(m_statusBarPrefab != null) {
 			for(int i=0; i<m_listStatusBar.Length; i++) {
-				if(m_listStatusBar[i] == null) {
-					m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
-					m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
-					m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
-					if(i == 0) {
-						m_listStatusBar[i].transform.localPosition = new Vector3(10, 10, 0);
-					} else {
-						m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 60, 0);
-					}
-				}
-				
 				Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
-				float currentBar = (GetCorrespondingAttributes(i) * statusBarFull.localScale.x) / 1F;
-				
-				if(currentBar < 0f)
-					currentBar = 0f;
-				if(currentBar > 1F)
-					currentBar = 1F;
-				
-				Vector3 scale = statusBarFull.localScale;
-				scale.x = currentBar;
-				statusBarFull.localScale = scale;
+				statusBarFull.localScale = 
+					GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
+						m_listStatusBar[i].transform.GetChild(2));
 			}
 		}
+		
+		yield return StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+	}
+	
+	// Create all status bar
+	public void CreateStatusBar()
+	{
+		if(m_statusBarPrefab != null) {
+			for(int i=0; i<m_listStatusBar.Length; i++) {
+				m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
+				m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
+				m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
+				if(i == 0) {
+					m_listStatusBar[i].transform.localPosition = new Vector3(10, 0, 0);
+				} else {
+					m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 30, 0);
+				}
+				
+				m_listStatusBar[i].transform.GetChild(1).localScale = 
+					GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
+						m_listStatusBar[i].transform.GetChild(2));
+			}
+		}
+		statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+	}
+	
+	// Returns the current status bar scale
+	private Vector3 GetCurrentStatusBarScale(float attributeValue, Transform statusBarFull)
+	{
+		float currentBar = (attributeValue * statusBarFull.localScale.x) / 1F;
+		
+		if(currentBar < 0f)
+			currentBar = 0f;
+		if(currentBar > 1F)
+			currentBar = 1F;
+		
+		Vector3 scale = statusBarFull.localScale;
+		scale.x = currentBar;
+		
+		return scale;
 	}
 	
 	// Remove the status bar from the screen
