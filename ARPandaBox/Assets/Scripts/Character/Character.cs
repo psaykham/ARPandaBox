@@ -75,7 +75,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			m_mouth = Shape.Find("Head/Mouth").GetComponent<UIStateToggleBtn>();
 		}
 		
-		InitNeeds();
+		//InitNeeds();
 	}
 	
     void Start()
@@ -190,13 +190,13 @@ public class Character : MonoBehaviour, ITrackableEventHandler
     private void OnTrackingFound()
     {
 		StartCoroutine(OnTrackingFoundProcess());
-		CreateStatusBar();
-		//statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
     }
 	
 	private IEnumerator OnTrackingFoundProcess()
 	{
 		yield return StartCoroutine(CheckInteractionManagerPresence());
+		InitNeeds();
+		CreateStatusBar();
 		m_isVisible = true;
 		InteractionManager.Instance.AddCharacter(this); 
 	}
@@ -226,10 +226,12 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		
 		if(m_statusBarPrefab != null) {
 			for(int i=0; i<m_listStatusBar.Length; i++) {
-				Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
-				statusBarFull.localScale = 
-					GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
-						m_listStatusBar[i].transform.GetChild(2));
+				if(m_listStatusBar[i] != null) {
+					Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
+					statusBarFull.localScale = 
+						GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
+							m_listStatusBar[i].transform.GetChild(2));
+				}
 			}
 		}
 		
