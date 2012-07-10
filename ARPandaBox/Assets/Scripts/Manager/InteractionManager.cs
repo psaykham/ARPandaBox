@@ -6,6 +6,7 @@ public class InteractionManager : Singleton<InteractionManager>
 {
 	// Manager
 	public Transform CharacterListTransfrom;
+	public Transform EnvironmentListTransform;
 	public GUIManager m_guiManager;
 	public ConversationManager m_conversationManager;
 	public EnvironmentManager m_environmentManager;
