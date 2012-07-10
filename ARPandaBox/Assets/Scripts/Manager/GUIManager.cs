@@ -12,8 +12,6 @@ public class GUIManager : Singleton<GUIManager>
 	private List<GameObject> m_messageInstanceList = new List<GameObject>();
 	private Rect m_menuArea;
 	
-	private Dictionary<string, GameObject> m_listOfCharactersEnvironment = new Dictionary<string, GameObject>();
-	
 	void Awake()
 	{
 	}

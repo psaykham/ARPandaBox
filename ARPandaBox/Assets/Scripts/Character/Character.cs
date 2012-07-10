@@ -96,6 +96,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		StartCoroutine(UpdateHunger());
 		StartCoroutine(UpdateStatusBar());
+		Debug.Log("bonjour");
 	}
 	
 	private IEnumerator UpdateHunger()
@@ -215,29 +216,31 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	// Display all status bars
 	public void DisplayStatusBar()
 	{	
-		for(int i=0; i<m_listStatusBar.Length; i++) {
-			if(m_listStatusBar[i] == null) {
-				m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
-				m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
-				m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
-				if(i == 0) {
-					m_listStatusBar[i].transform.localPosition = new Vector3(10, 10, 0);
-				} else {
-					m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 60, 0);
+		if(m_statusBarPrefab != null) {
+			for(int i=0; i<m_listStatusBar.Length; i++) {
+				if(m_listStatusBar[i] == null) {
+					m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
+					m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
+					m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
+					if(i == 0) {
+						m_listStatusBar[i].transform.localPosition = new Vector3(10, 10, 0);
+					} else {
+						m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 60, 0);
+					}
 				}
+				
+				Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
+				float currentBar = (GetCorrespondingAttributes(i) * statusBarFull.localScale.x) / 1F;
+				
+				if(currentBar < 0f)
+					currentBar = 0f;
+				if(currentBar > 1F)
+					currentBar = 1F;
+				
+				Vector3 scale = statusBarFull.localScale;
+				scale.x = currentBar;
+				statusBarFull.localScale = scale;
 			}
-			
-			Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
-			float currentBar = (GetCorrespondingAttributes(i) * statusBarFull.localScale.x) / 1F;
-			
-			if(currentBar < 0f)
-				currentBar = 0f;
-			if(currentBar > 1F)
-				currentBar = 1F;
-			
-			Vector3 scale = statusBarFull.localScale;
-			scale.x = currentBar;
-			statusBarFull.localScale = scale;
 		}
 	}
 	
