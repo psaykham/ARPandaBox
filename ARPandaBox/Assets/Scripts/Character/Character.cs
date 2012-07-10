@@ -94,6 +94,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private void InitNeeds()
 	{
 		StartCoroutine(UpdateHunger());
+		StartCoroutine(UpdateHygiene());
 	}
 	
 	private IEnumerator UpdateHunger()
@@ -101,6 +102,13 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
 		Eat(-1);
 		yield return StartCoroutine(UpdateHunger());
+	}
+	
+	private IEnumerator UpdateHygiene()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
+		Clean(-1);
+		yield return StartCoroutine(UpdateHygiene());
 	}
 	
 	// Event trackable
@@ -170,6 +178,12 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public void Eat(int amount)
 	{
 		m_hungrer = Mathf.Clamp(m_hungrer + (amount / 100f), 0f, 1f);
+	}
+	
+	// It cleans itself
+	public void Clean(int amount)
+	{
+		m_hygiene = Mathf.Clamp(m_hygiene + (amount / 100f), 0f, 1f);
 	}
 	
 	// Add the character for the interaction
