@@ -42,8 +42,12 @@ public class InteractionManager : Singleton<InteractionManager>
 	
 	public void RemoveCharacter(string characterName)
 	{
-		ConversationManager.Instance.Remove(characterName);
-		EnvironmentManager.Instance.RemoveEnvironment(characterName);	
+		if(ConversationManager.Instance != null)
+			ConversationManager.Instance.Remove(characterName);
+		
+		if(EnvironmentManager.Instance != null)
+			EnvironmentManager.Instance.RemoveEnvironment(characterName);	
+		
 		m_characterList.Remove(characterName);
 	}
 }

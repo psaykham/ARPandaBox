@@ -25,10 +25,13 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 	public void RemoveEnvironment(string characterName)
 	{
 		Character character = InteractionManager.Instance.CharacterList[characterName];
-		Transform environmentTransform = InteractionManager.Instance.EnvironmentListTransform.Find(character.Name);
-		if(environmentTransform != null)
+		if(InteractionManager.Instance.EnvironmentListTransform != null)
 		{
-			Destroy(environmentTransform.gameObject);
+			Transform environmentTransform = InteractionManager.Instance.EnvironmentListTransform.Find(character.Name);
+			if(environmentTransform != null)
+			{
+				Destroy(environmentTransform.gameObject);
+			}
 		}
 	}
 }

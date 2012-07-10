@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
     <Tracking>
-        <ImageTarget size="250 250" name="CubeTrackable.Bottom"/>
-        <ImageTarget size="250 250" name="CubeTrackable.Front"/>
-        <ImageTarget size="250 250" name="CubeTrackable.Left"/>
-        <ImageTarget size="250 250" name="CubeTrackable.Right"/>
-        <ImageTarget size="250 250" name="CubeTrackable.Top"/>
-        <ImageTarget size="250 250" name="CubeTrackable.Back"/>
         <ImageTarget size="0.90 0.60" name="CubeTrackable_2.Bottom"/>
         <ImageTarget size="0.90 1.20" name="CubeTrackable_2.Front"/>
         <ImageTarget size="0.60 1.20" name="CubeTrackable_2.Right"/>
@@ -15,18 +9,16 @@
         <ImageTarget size="0.90 1.20" name="CubeTrackable_2.Back"/>
         <ImageTarget size="2.50 1.70" name="Panda.Bottom"/>
         <ImageTarget size="2.50 3.35" name="Panda.Front"/>
-        <ImageTarget size="1.70 3.35" name="Panda.Right"/>
-        <ImageTarget size="1.70 3.35" name="Panda.Left"/>
         <ImageTarget size="2.50 1.70" name="Panda.Top"/>
         <ImageTarget size="2.50 3.35" name="Panda.Back"/>
-        <MultiTarget name="CubeTrackable">
-            <Part name="CubeTrackable.Front" translation="0 0 125" rotation="AD: 1 0 0 0"/>
-            <Part name="CubeTrackable.Back" translation="0 0 -125" rotation="AD: 0 1 0 180"/>
-            <Part name="CubeTrackable.Left" translation="-125 0 0" rotation="AD: 0 1 0 -90"/>
-            <Part name="CubeTrackable.Right" translation="125 0 0" rotation="AD: 0 1 0 90"/>
-            <Part name="CubeTrackable.Top" translation="0 125 0" rotation="AD: 1 0 0 -90"/>
-            <Part name="CubeTrackable.Bottom" translation="0 -125 0" rotation="AD: 1 0 0 90"/>
-        </MultiTarget>
+        <ImageTarget size="1.70 3.35" name="Panda.Left"/>
+        <ImageTarget size="1.70 3.35" name="Panda.Right"/>
+        <ImageTarget size="1.70 3.35" name="Tiger.Right"/>
+        <ImageTarget size="2.50 3.35" name="Tiger.Front"/>
+        <ImageTarget size="1.70 3.35" name="Tiger.Left"/>
+        <ImageTarget size="2.50 1.70" name="Tiger.Bottom"/>
+        <ImageTarget size="2.50 1.70" name="Tiger.Top"/>
+        <ImageTarget size="2.50 3.35" name="Tiger.Back"/>
         <MultiTarget name="CubeTrackable_2">
             <Part name="CubeTrackable_2.Front" translation="0 0 0.30" rotation="AD: 1 0 0 0"/>
             <Part name="CubeTrackable_2.Back" translation="0 0 -0.30" rotation="AD: 0 1 0 180"/>
@@ -42,6 +34,14 @@
             <Part name="Panda.Right" translation="1.25 0 0" rotation="AD: 0 1 0 90"/>
             <Part name="Panda.Top" translation="0 1.675 0" rotation="AD: 1 0 0 -90"/>
             <Part name="Panda.Bottom" translation="0 -1.675 0" rotation="AD: 1 0 0 90"/>
+        </MultiTarget>
+        <MultiTarget name="Tiger">
+            <Part name="Tiger.Front" translation="0 0 0.85" rotation="AD: 1 0 0 0"/>
+            <Part name="Tiger.Back" translation="0 0 -0.85" rotation="AD: 0 1 0 180"/>
+            <Part name="Tiger.Left" translation="-1.25 0 0" rotation="AD: 0 1 0 -90"/>
+            <Part name="Tiger.Right" translation="1.25 0 0" rotation="AD: 0 1 0 90"/>
+            <Part name="Tiger.Top" translation="0 1.675 0" rotation="AD: 1 0 0 -90"/>
+            <Part name="Tiger.Bottom" translation="0 -1.675 0" rotation="AD: 1 0 0 90"/>
         </MultiTarget>
     </Tracking>
 </QCARConfig>
