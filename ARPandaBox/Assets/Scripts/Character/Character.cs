@@ -56,6 +56,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	// Status Bar
 	public GameObject m_statusBarPrefab;
 	private GameObject[] m_listStatusBar = new GameObject[6];
+	private Coroutine statusBarCoRoutine = null;
 	
 	void Awake()
 	{	
@@ -177,7 +178,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
     private void OnTrackingFound()
     {
 		StartCoroutine(OnTrackingFoundProcess());
-		StartCoroutine(UpdateStatusBar());
+		statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
     }
 	
 	private IEnumerator OnTrackingFoundProcess()
@@ -195,6 +196,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			m_isVisible = false;
 			InteractionManager.Instance.RemoveCharacter(Name); 
 		}
+		RemoveStatusBar();
     }
 	
 	// Wait that the InteractionManager is created
@@ -241,6 +243,21 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 				statusBarFull.localScale = scale;
 			}
 		}
+	}
+	
+	// Remove the status bar from the screen
+	public void RemoveStatusBar()
+	{
+		if(statusBarCoRoutine != null) {
+			StopCoroutine("UpdateStatusBar");
+		}
+		
+		for(int i=0; i<m_listStatusBar.Length; i++) {
+			if(m_listStatusBar[i] != null) {
+				Destroy(m_listStatusBar[i]);
+			}
+		}
+		
 	}
 	
 	// Returns the corresponding attribute
