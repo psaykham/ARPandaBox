@@ -95,8 +95,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private void InitNeeds()
 	{
 		StartCoroutine(UpdateHunger());
-		StartCoroutine(UpdateStatusBar());
-		Debug.Log("bonjour");
 	}
 	
 	private IEnumerator UpdateHunger()
@@ -179,6 +177,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
     private void OnTrackingFound()
     {
 		StartCoroutine(OnTrackingFoundProcess());
+		StartCoroutine(UpdateStatusBar());
     }
 	
 	private IEnumerator OnTrackingFoundProcess()
