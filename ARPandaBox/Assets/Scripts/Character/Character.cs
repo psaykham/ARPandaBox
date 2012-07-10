@@ -10,6 +10,16 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		WICKED,
 	}
 	
+ 	enum StatusBarType
+	{
+		ENERGY,
+		HUNGER,
+		FUN,
+		SOCIAL,
+		BLADDER,
+		HYGIENE,
+	};
+	
 	public string Name;
 	public EmotionType CurrentEmotion;
 	public Transform Shape;
@@ -43,6 +53,10 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public GameObject m_environment;
 	public GameObject Environment {get{return m_environment;} set{m_environment = value;}}
 	
+	// Status Bar
+	public GameObject m_statusBarPrefab;
+	private GameObject[] m_listStatusBar = new GameObject[6];
+	
 	void Awake()
 	{	
 		// Pupil
@@ -72,6 +86,8 @@ public class Character : MonoBehaviour, ITrackableEventHandler
             m_trackableBehaviour.RegisterTrackableEventHandler(this);
         }
 		
+		// Init List of StatusBar
+		
 		StartCoroutine(EyeAlive());
     }
 	
@@ -79,6 +95,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private void InitNeeds()
 	{
 		StartCoroutine(UpdateHunger());
+		StartCoroutine(UpdateStatusBar());
 	}
 	
 	private IEnumerator UpdateHunger()
@@ -185,5 +202,96 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		while(InteractionManager.Instance == null)
 			yield return 100;
+	}
+	
+	//Update the StatusBar
+	public IEnumerator UpdateStatusBar()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
+		DisplayStatusBar();
+		yield return StartCoroutine(UpdateStatusBar());
+	}
+	
+	// Display all status bars
+	public void DisplayStatusBar()
+	{	
+		for(int i=0; i<m_listStatusBar.Length; i++) {
+			if(m_listStatusBar[i] == null) {
+				m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
+				m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
+				m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
+				if(i == 0) {
+					m_listStatusBar[i].transform.localPosition = new Vector3(10, 10, 0);
+				} else {
+					m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 60, 0);
+				}
+			}
+			
+			Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
+			float currentBar = (GetCorrespondingAttributes(i) * statusBarFull.localScale.x) / 1F;
+			
+			if(currentBar < 0f)
+				currentBar = 0f;
+			if(currentBar > 1F)
+				currentBar = 1F;
+			
+			Vector3 scale = statusBarFull.localScale;
+			scale.x = currentBar;
+			statusBarFull.localScale = scale;
+		}
+	}
+	
+	// Returns the corresponding attribute
+	private float GetCorrespondingAttributes(int statusBarType)
+	{
+		switch(statusBarType) {
+		case (int)StatusBarType.ENERGY:
+			return m_energy;
+			
+		case (int)StatusBarType.HUNGER:
+			return m_hungrer;
+			
+		case (int)StatusBarType.FUN:
+			return m_fun;
+			
+		case (int)StatusBarType.SOCIAL:
+			return m_social;
+			
+		case (int)StatusBarType.BLADDER:
+			return m_bladder;
+			
+		case (int)StatusBarType.HYGIENE:
+			return m_hygiene;
+			
+		default:
+			return -1F;
+		}
+	}
+	
+	// Returns the corresponding attribute's name
+	private string GetCorrespondingAttributesName(int statusBarType)
+	{
+		switch(statusBarType) {
+		case (int)StatusBarType.ENERGY:
+			return "ENERGY";
+			
+		case (int)StatusBarType.HUNGER:
+			return "HUNGER";
+			
+		case (int)StatusBarType.FUN:
+			return "FUN";
+			
+		case (int)StatusBarType.SOCIAL:
+			return "SOCIAL";
+			
+		case (int)StatusBarType.BLADDER:
+			return "BLADDER";
+			
+		case (int)StatusBarType.HYGIENE:
+			return "HYGIENE";
+			
+		default:
+			return "";
+		}
 	}
 }
