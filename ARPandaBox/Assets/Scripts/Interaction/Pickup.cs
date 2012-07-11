@@ -8,7 +8,7 @@ public class Pickup : MonoBehaviour
 		FOOD,	
 	}
 	public PickupType m_type;
-	public int m_amount = 1;
+	public int m_amount;
 	
 	void OnCollisionEnter(Collision collision) 
 	{

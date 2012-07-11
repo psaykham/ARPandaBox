@@ -2,36 +2,17 @@ using UnityEngine;
 using System.Collections;
 
 public class CleanUp : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
 	
-	}
+	public int m_amount;
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
-	void OnCollisionEnter(Collision collision) 
+	void OnTriggerEnter(Collider collider)
 	{
-		if(collision.transform.parent != null)
-		{
-			Character character = collision.transform.parent.GetComponent<Character>();
-			/*if(character != null)
-			{
-				switch(m_type)
-				{
-					case PickupType.FOOD:
-					character.Eat(m_amount);
-					break;
-				}
-				
-				Destroy(gameObject);
-			}*/
-			
-			character.RemoveStatusBar();
+		if(collider.transform.parent != null) {
+			Character character = collider.gameObject.transform.parent.GetComponent<Character>();
+			if(character != null) {
+				character.Clean(m_amount);
+				character.RemoveStatusBar();
+			}
 		}
-
-    }
+	}
 }
