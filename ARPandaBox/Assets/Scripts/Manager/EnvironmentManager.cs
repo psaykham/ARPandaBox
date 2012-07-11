@@ -9,16 +9,20 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 	{
 		// Load the character environment
 		Character character = InteractionManager.Instance.CharacterList[characterName];
-		if(character.Environment != null) 
+		if(character.m_environment != null) 
 		{
-			// Instantiate the prefab
-			GameObject characterEnvironment = (GameObject)Instantiate(character.Environment);
-			Vector3 terrainSize = characterEnvironment.GetComponent<Terrain>().terrainData.size;
-			characterEnvironment.name = characterName;
-			
-			// Positionning the prefab
-			characterEnvironment.transform.parent = InteractionManager.Instance.EnvironmentListTransform;
-			characterEnvironment.transform.localPosition = character.transform.position + new Vector3(-terrainSize.x/2, -terrainSize.y/2, character.Wireframe.transform.localScale.y);
+			if(InteractionManager.Instance.EnvironmentListTransform.Find(characterName) == null)
+			{
+				// Instantiate the prefab
+				GameObject characterEnvironment = (GameObject)Instantiate(character.m_environment);
+				characterEnvironment.name = characterName;
+				
+				// Positionning the prefab	
+				Vector3 environmentPosition = character.transform.position;
+				environmentPosition.y  = -InteractionManager.Instance.WorldMarker.Find("Wireframe").localScale.z;
+				characterEnvironment.transform.position = environmentPosition;
+				characterEnvironment.transform.parent = InteractionManager.Instance.EnvironmentListTransform;
+			}
 		}
 	}
 	

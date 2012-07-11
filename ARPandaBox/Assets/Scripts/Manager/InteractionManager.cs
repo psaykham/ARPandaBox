@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class InteractionManager : Singleton<InteractionManager>
 {
 	// Manager
+	public Transform WorldMarker;
 	public Transform CharacterListTransfrom;
 	public Transform EnvironmentListTransform;
 	public GUIManager m_guiManager;
@@ -45,8 +46,8 @@ public class InteractionManager : Singleton<InteractionManager>
 		if(ConversationManager.Instance != null)
 			ConversationManager.Instance.Remove(characterName);
 		
-		if(EnvironmentManager.Instance != null)
-			EnvironmentManager.Instance.RemoveEnvironment(characterName);	
+		/*if(EnvironmentManager.Instance != null)
+			EnvironmentManager.Instance.RemoveEnvironment(characterName);*/	
 		
 		m_characterList.Remove(characterName);
 	}

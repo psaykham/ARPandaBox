@@ -30,9 +30,18 @@ public class GUIManager : Singleton<GUIManager>
 	// Simple  GUI with default system
 	void OnGUI()
 	{
-		GUILayout.BeginHorizontal();
-		GUILayout.Label(GameObject.FindGameObjectWithTag("MainCamera").transform.position.ToString());
+		// Camera position
+		/*GUILayout.BeginHorizontal();
+		GUILayout.Label("Camera Position:" +GameObject.FindGameObjectWithTag("MainCamera").transform.position.ToString());
 		GUILayout.EndHorizontal();
+		
+		// Character Position
+		if(InteractionManager.Instance.CharacterList.Count > 0)
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Character Position: " + InteractionManager.Instance.CharacterList["Yoann"].transform.position.ToString());
+			GUILayout.EndHorizontal();
+		}
 		
 		ComputePosition();
 			
@@ -55,7 +64,7 @@ public class GUIManager : Singleton<GUIManager>
 			}
 		}
         GUILayout.EndHorizontal();
-        GUILayout.EndArea();
+        GUILayout.EndArea();*/
 	}
 	
 	/// Compute the coordinates of the menu depending on the current orientation.

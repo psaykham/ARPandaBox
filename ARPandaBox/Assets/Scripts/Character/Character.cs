@@ -25,6 +25,8 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public Transform Shape;
 	public float EyesRadius = 20f;
 	public GameObject Wireframe;
+	public GameObject m_environment;
+	public GameObject m_statusBarPrefab;
 	
 	// Commmunication
 	private ConversationManager.ConversationStep m_currentConversationStep;
@@ -49,12 +51,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private Transform m_target;
 	public Transform Target { get {return m_target;} set{m_target = value;}}
 	
-	// Environnement correspondant
-	public GameObject m_environment;
-	public GameObject Environment {get{return m_environment;} set{m_environment = value;}}
-	
 	// Status Bar
-	public GameObject m_statusBarPrefab;
 	private GameObject[] m_listStatusBar = new GameObject[2];
 	private Coroutine statusBarCoRoutine = null;
 	
@@ -224,9 +221,12 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
 		
-		if(m_statusBarPrefab != null) {
-			for(int i=0; i<m_listStatusBar.Length; i++) {
-				if(m_listStatusBar[i] != null) {
+		if(m_statusBarPrefab != null) 
+		{
+			for(int i=0; i<m_listStatusBar.Length; i++) 
+			{
+				if(m_listStatusBar[i] != null) 
+				{
 					Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
 					statusBarFull.localScale = 
 						GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
@@ -235,14 +235,16 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			}
 		}
 		
-		yield return StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+		yield return StartCoroutine(UpdateStatusBar());
 	}
 	
 	// Create all status bar
 	public void CreateStatusBar()
 	{
-		if(m_statusBarPrefab != null) {
-			for(int i=0; i<m_listStatusBar.Length; i++) {
+		if(m_statusBarPrefab != null) 
+		{
+			for(int i=0; i<m_listStatusBar.Length; i++) 
+			{
 				m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
 				m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
 				m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
@@ -257,7 +259,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 						m_listStatusBar[i].transform.GetChild(2));
 			}
 		}
-		statusBarCoRoutine = StartCoroutine("UpdateStatusBar", UpdateStatusBar());
+		statusBarCoRoutine = StartCoroutine(UpdateStatusBar());
 	}
 	
 	// Returns the current status bar scale
