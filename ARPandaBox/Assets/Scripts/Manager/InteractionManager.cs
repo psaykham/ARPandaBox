@@ -15,6 +15,9 @@ public class InteractionManager : Singleton<InteractionManager>
 	private Dictionary<string, Character> m_characterList = new Dictionary<string, Character>();
 	public Dictionary<string, Character> CharacterList {get {return m_characterList;}}
 	
+	private Character m_mainCharacter = null;
+	public Character MainCharacter {get{return m_mainCharacter;} set{m_mainCharacter=value;}}
+	
 	void Awake()
 	{
 		Misc.InstantiateAsChild(m_guiManager, this);
@@ -33,6 +36,9 @@ public class InteractionManager : Singleton<InteractionManager>
 
 	public void AddCharacter(Character character)
 	{
+		if(m_mainCharacter == null)
+			m_mainCharacter = character;
+		
 		print ("AddCharacter");
 		if(!m_characterList.ContainsKey(character.Name))
 		{
