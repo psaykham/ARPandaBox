@@ -19,7 +19,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 				
 				// Positionning the prefab	
 				Vector3 environmentPosition = character.transform.position;
-				environmentPosition.y  = -InteractionManager.Instance.WorldMarker.Find("Wireframe").localScale.z;
+				//environmentPosition.y  = -InteractionManager.Instance.WorldMarker.Find("Wireframe").localScale.z;
 				characterEnvironment.transform.position = environmentPosition;
 				characterEnvironment.transform.parent = InteractionManager.Instance.EnvironmentListTransform;
 			}

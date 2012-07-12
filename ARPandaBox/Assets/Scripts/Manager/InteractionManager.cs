@@ -43,7 +43,10 @@ public class InteractionManager : Singleton<InteractionManager>
 		if(!m_characterList.ContainsKey(character.Name))
 		{
 			m_characterList.Add(character.Name, character);
-			m_environmentManager.LoadEnvironment(character.Name);
+			
+			// Only instantiate environment if worldmarker is tracked
+			if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED)
+				m_environmentManager.LoadEnvironment(character.Name);
 		}
 	}
 	
@@ -52,8 +55,8 @@ public class InteractionManager : Singleton<InteractionManager>
 		if(ConversationManager.Instance != null)
 			ConversationManager.Instance.Remove(characterName);
 		
-		/*if(EnvironmentManager.Instance != null)
-			EnvironmentManager.Instance.RemoveEnvironment(characterName);*/	
+		if(EnvironmentManager.Instance != null)
+			EnvironmentManager.Instance.RemoveEnvironment(characterName);
 		
 		m_characterList.Remove(characterName);
 	}

@@ -44,8 +44,8 @@ public class ConversationManager : Singleton<ConversationManager>
 				m_characterHadSpoken.Add(kvp.Key, false);
 			}
 			
-			//CheckCharacterAlone(kvp.Key);
-			//StartCoroutine(Speak(kvp.Key));
+			CheckCharacterAlone(kvp.Key);
+			StartCoroutine(Speak(kvp.Key));
 		}
 	}
 	
