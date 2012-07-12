@@ -5,6 +5,10 @@ using System.Collections.Generic;
 public class GUIManager : Singleton<GUIManager>
 {
 	public Transform ScreenPosition;
+	public Transform NavigationBarTransform;
+	public GameObject m_navigationBarPrefab;
+	public Transform StatusBarTransform;
+	public GameObject m_statusBarPrefab;
 	public GameObject m_dialogBoxPrefab;
 	
 	public Vector3 m_dialogBoxOffet;
@@ -12,8 +16,10 @@ public class GUIManager : Singleton<GUIManager>
 	private List<GameObject> m_messageInstanceList = new List<GameObject>();
 	private Rect m_menuArea;
 	
-	void Awake()
+	void Start()
 	{
+		GameObject navigationBar = (GameObject)Instantiate(m_navigationBarPrefab, NavigationBarTransform.position, NavigationBarTransform.rotation);
+		navigationBar.transform.parent = NavigationBarTransform;
 	}
 	
 	// Display a message to the screen
