@@ -44,7 +44,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private float m_fun = 1f;
 	private float m_social = 1f;
 	private float m_bladder = 1f;
-	private float m_hygiene = 1f;
+	private float m_hygiene = 0.5f;
 	
 	// Shape
 	private bool m_isVisible = false;
