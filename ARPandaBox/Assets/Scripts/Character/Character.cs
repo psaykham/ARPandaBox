@@ -133,6 +133,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public void Eat(int amount)
 	{
 		m_hungrer = Mathf.Clamp(m_hungrer + (amount / 100f), 0f, 1f);
+		InteractionManager.Instance.FoodNumber--;
 	}
 	
 	// It cleans itself

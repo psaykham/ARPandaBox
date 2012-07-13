@@ -5,10 +5,29 @@ public class Pickup : MonoBehaviour
 {
 	public enum PickupType
 	{
-		FOOD,	
+		FOOD,
+		FUN,
 	}
 	public PickupType m_type;
 	public int m_amount;
+	
+	void Update () 
+	{
+		if(transform.position.y <= -50f)
+		{
+			switch(m_type)
+			{
+				case PickupType.FOOD:
+				InteractionManager.Instance.FoodNumber--;
+				break;
+				
+				case PickupType.FUN:
+				InteractionManager.Instance.BallNumber--;
+				break;
+			}
+			Destroy(gameObject);
+		}
+	}
 	
 	void OnCollisionEnter(Collision collision) 
 	{
@@ -21,10 +40,13 @@ public class Pickup : MonoBehaviour
 				{
 					case PickupType.FOOD:
 					character.Eat(m_amount);
+					Destroy(gameObject);
+					break;
+					
+					case PickupType.FUN:
+					character.Fun(m_amount);
 					break;
 				}
-				
-				Destroy(gameObject);
 			}
 		}
 

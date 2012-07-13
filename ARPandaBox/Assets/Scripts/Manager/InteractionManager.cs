@@ -20,6 +20,11 @@ public class InteractionManager : Singleton<InteractionManager>
 	private Character m_mainCharacter = null;
 	public Character MainCharacter {get{return m_mainCharacter;} set{m_mainCharacter=value;}}
 	
+	private int m_foodNumber = 0;
+	public int FoodNumber {get{return m_foodNumber;} set{m_foodNumber=value;}}
+	private int m_ballNumber = 0;
+	public int BallNumber {get{return m_ballNumber;} set{m_ballNumber=value;}}
+	
 	void Awake()
 	{
 		Misc.InstantiateAsChild(m_guiManager, this);
@@ -91,27 +96,46 @@ public class InteractionManager : Singleton<InteractionManager>
 	
 	public void GiveFood()
 	{
-		if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED && m_mainCharacter != null)
+		if(m_foodNumber < 5)
 		{
-			Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
-			if(environment != null)
+			if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED && m_mainCharacter != null)
 			{
-				GameObject food = (GameObject)Instantiate(m_foodPrefab);	
-				food.transform.parent = environment;
+				Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
+				if(environment != null)
+				{
+					GameObject food = (GameObject)Instantiate(m_foodPrefab);
+					Vector3 direction = new Vector3(UnityEngine.Random.Range(-100, 100)/100f, 0f, UnityEngine.Random.Range(-100, 100)/100f);
+					direction.Normalize();
+					direction *= 3f;
+					food.transform.position = m_mainCharacter.transform.position + new Vector3(0f, -1.7f, 0f) + direction;
+					food.transform.rotation = Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f);
+					food.transform.parent = environment;
+					
+					m_foodNumber++;
+				}
 			}
-		}	
+		}
 	}
 	
 	public void GiveBall()
 	{
-		if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED && m_mainCharacter != null)
+		if(m_ballNumber < 10)
 		{
-			Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
-			if(environment != null)
+			if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED && m_mainCharacter != null)
 			{
-				GameObject ball = (GameObject)Instantiate(m_ballPrefab);	
-				ball.transform.parent = environment;
-			}
-		}	
+				Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
+				if(environment != null)
+				{
+					GameObject ball = (GameObject)Instantiate(m_ballPrefab);
+					Vector3 direction = new Vector3(UnityEngine.Random.Range(-100, 100)/100f, 0f, UnityEngine.Random.Range(-100, 100)/100f);
+					direction.Normalize();
+					direction *= 3f;
+					ball.transform.position = m_mainCharacter.transform.position + new Vector3(0f, 2.5f, 0f) + direction;
+					ball.transform.parent = environment;
+					
+					m_ballNumber++;
+				}
+			}	
+		}
 	}	
 }

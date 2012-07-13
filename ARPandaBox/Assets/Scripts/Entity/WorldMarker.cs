@@ -44,10 +44,13 @@ public class WorldMarker : MonoBehaviour, ITrackableEventHandler
 	// Rmove environment
     private void OnTrackingLost()
     {	
-		foreach(KeyValuePair<string, Character> kvp in InteractionManager.Instance.CharacterList)
+		if(InteractionManager.Instance != null)
 		{
-			if(InteractionManager.Instance.EnvironmentListTransform.Find(kvp.Key) != null)
-				EnvironmentManager.Instance.RemoveEnvironment(kvp.Key);
+			foreach(KeyValuePair<string, Character> kvp in InteractionManager.Instance.CharacterList)
+			{
+				if(InteractionManager.Instance.EnvironmentListTransform.Find(kvp.Key) != null)
+					EnvironmentManager.Instance.RemoveEnvironment(kvp.Key);
+			}
 		}
     }
 }
