@@ -54,6 +54,8 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public Transform Target { get {return m_target;} set{m_target = value;}}
 	
 	// Status Bar
+	private bool m_isNeedsInitialized = false;
+	public bool IsNeedsInitialized {get{return m_isNeedsInitialized;}}
 	private GameObject[] m_listStatusBar = new GameObject[4];
 	public GameObject[] StatusBarList {get{return m_listStatusBar;}}
 	private Coroutine statusBarCoRoutine = null;
@@ -92,6 +94,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	// Init Needs
 	public void InitNeeds()
 	{
+		m_isNeedsInitialized = true;
 		StartCoroutine(UpdateHunger());
 		StartCoroutine(UpdateHygiene());
 		StartCoroutine(UpdateFun());

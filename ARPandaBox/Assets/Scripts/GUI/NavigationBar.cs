@@ -62,8 +62,11 @@ public class NavigationBar : MonoBehaviour
 		if(InteractionManager.Instance.MainCharacter != null)
 		{
 			iPhoneKeyboard keyboard = iPhoneKeyboard.Open("", iPhoneKeyboardType.Default, true, true, false);
-			yield return keyboard;
-			GUIManager.Instance.DisplayMessage(InteractionManager.Instance.MainCharacter.Name, keyboard.text);
+			while(keyboard.active)
+				yield return 100;
+			
+			if(keyboard.text.Length > 0)
+				GUIManager.Instance.DisplayMessage(InteractionManager.Instance.MainCharacter.Name, keyboard.text);
 		}
 	}
 }
