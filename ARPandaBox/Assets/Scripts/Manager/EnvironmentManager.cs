@@ -19,7 +19,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 				
 				// Positionning the prefab	
 				Vector3 environmentPosition = character.transform.position;
-				//environmentPosition.y  = -InteractionManager.Instance.WorldMarker.Find("Wireframe").localScale.z;
+				environmentPosition.y  = -1.7f;
 				characterEnvironment.transform.position = environmentPosition;
 				characterEnvironment.transform.parent = InteractionManager.Instance.EnvironmentListTransform;
 			}
@@ -28,13 +28,16 @@ public class EnvironmentManager : Singleton<EnvironmentManager>
 	
 	public void RemoveEnvironment(string characterName)
 	{
-		Character character = InteractionManager.Instance.CharacterList[characterName];
-		if(InteractionManager.Instance.EnvironmentListTransform != null)
+		if(InteractionManager.Instance.CharacterList.ContainsKey(characterName))
 		{
-			Transform environmentTransform = InteractionManager.Instance.EnvironmentListTransform.Find(character.Name);
-			if(environmentTransform != null)
+			Character character = InteractionManager.Instance.CharacterList[characterName];
+			if(InteractionManager.Instance.EnvironmentListTransform != null)
 			{
-				Destroy(environmentTransform.gameObject);
+				Transform environmentTransform = InteractionManager.Instance.EnvironmentListTransform.Find(character.Name);
+				if(environmentTransform != null)
+				{
+					Destroy(environmentTransform.gameObject);
+				}
 			}
 		}
 	}

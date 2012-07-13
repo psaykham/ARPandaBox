@@ -40,10 +40,10 @@ public class ConversationManager : Singleton<ConversationManager>
 		{
 			// Add the character to the list
 			if(!m_characterIsSpeaking.ContainsKey(kvp.Key))
-			{
 				m_characterIsSpeaking.Add(kvp.Key, false);
+			
+			if(!m_characterHadSpoken.ContainsKey(kvp.Key))
 				m_characterHadSpoken.Add(kvp.Key, false);
-			}
 			
 			CheckCharacterAlone(kvp.Key);
 			StartCoroutine(Speak(kvp.Key));

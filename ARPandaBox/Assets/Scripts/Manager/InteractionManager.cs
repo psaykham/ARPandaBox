@@ -37,11 +37,18 @@ public class InteractionManager : Singleton<InteractionManager>
 
 	public void AddCharacter(ref Character character)
 	{		
-		character.InitNeeds();
+		if(!character.IsNeedsInitialized)
+			character.InitNeeds();
+		
 		if(m_mainCharacter == null)
 		{
 			m_mainCharacter = character;
 			character.CreateStatusBar();
+		}
+		else
+		{
+			if(m_mainCharacter.Name == character.Name)
+				character.CreateStatusBar();
 		}
 		
 		print ("AddCharacter");
