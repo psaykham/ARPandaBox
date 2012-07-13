@@ -15,7 +15,9 @@ public class Misc
 	
 	public static void SetRendererActive(Transform tr, bool isActive)
 	{
-		tr.renderer.enabled = isActive;
+		if(tr.renderer != null)
+			tr.renderer.enabled = isActive;
+		
 		foreach(Transform child in tr)
 			SetRendererActive(child, isActive);
 	}

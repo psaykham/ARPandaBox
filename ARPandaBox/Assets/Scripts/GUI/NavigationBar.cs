@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NavigationBar : MonoBehaviour 
 {
@@ -8,7 +9,8 @@ public class NavigationBar : MonoBehaviour
 		// Hide Active state
 		foreach(Transform child in transform)
 		{
-			child.Find("Active").gameObject.active = false;
+			if(child.name != "Profile")
+				child.Find("Active").gameObject.active = false;
 			UIButton buttonControl = child.Find("Background").GetComponent<UIButton>();
 			buttonControl.AddInputDelegate(NavigationBarDelegate);
 		}	
@@ -18,34 +20,50 @@ public class NavigationBar : MonoBehaviour
 	{
 		if (ptr.evt == POINTER_INFO.INPUT_EVENT.TAP)
 		{	
-			GameObject buttonActive = ptr.targetObj.transform.parent.Find("Active").gameObject;
-			if(!buttonActive.active)
+			Transform button = ptr.targetObj.transform.parent;
+			GameObject buttonActive = button.Find("Active").gameObject;
+			print(button.name);
+			switch(button.name)
 			{
-				foreach(Transform child in transform)
-					child.Find("Active").gameObject.active = false;
+				case "Profile":
+				if(InteractionManager.Instance != null)
+				{
+					buttonActive.active = !buttonActive.active;
+					Misc.SetRendererActive(GUIManager.Instance.StatusBarTransform, buttonActive.active);
+				}
+				break;
 				
-				buttonActive.active = true;	
-				ButtonAction(ptr.targetObj.transform.parent.name);
-			}
-			else
-			{
-				buttonActive.active = false;	
+				case "Talk":
+				StartCoroutine(KeyboardActivate());
+				break;
+				
+				case "Food":
+				InteractionManager.Instance.GiveFood();
+				break;
+				
+				case "Ball":
+				InteractionManager.Instance.GiveBall();
+				break;
+				
+				case "Settings":
+				buttonActive.active = !buttonActive.active;
+				Dictionary<string, Character> characterListTmp = new Dictionary<string, Character>(InteractionManager.Instance.CharacterList);
+				foreach(KeyValuePair<string, Character> kvp in characterListTmp)
+				{
+					Misc.SetRendererActive(InteractionManager.Instance.CharacterList[kvp.Key].Wireframe.transform, buttonActive.active);
+				}
+				break;
 			}
 		}
 	}
 	
-	private void ButtonAction(string buttonName)
+	private IEnumerator KeyboardActivate()
 	{
-		print(buttonName);
-		switch(buttonName)
+		if(InteractionManager.Instance.MainCharacter != null)
 		{
-			case "Profile":
-			print("You are "+InteractionManager.Instance.MainCharacter.Name);
-			break;
-			
-			case "Talk":
-			iPhoneKeyboard.Open("", iPhoneKeyboardType.Default, false, false, true, true);
-			break;
+			iPhoneKeyboard keyboard = iPhoneKeyboard.Open("", iPhoneKeyboardType.Default, true, true, false);
+			yield return keyboard;
+			GUIManager.Instance.DisplayMessage(InteractionManager.Instance.MainCharacter.Name, keyboard.text);
 		}
 	}
 }

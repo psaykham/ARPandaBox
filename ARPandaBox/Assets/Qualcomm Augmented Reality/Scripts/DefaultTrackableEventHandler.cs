@@ -66,8 +66,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
 
         // Enable rendering:
-        foreach (Renderer component in rendererComponents) {
-            component.enabled = true;
+        foreach (Renderer component in rendererComponents) 
+		{
+			if(component.name != "Wireframe")
+            	component.enabled = true;
         }
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
@@ -79,8 +81,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
 
         // Disable rendering:
-        foreach (Renderer component in rendererComponents) {
-            component.enabled = false;
+        foreach (Renderer component in rendererComponents) 
+		{
+			if(component.name != "Wireframe")
+            	component.enabled = false;
         }
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");

@@ -2,6 +2,52 @@
 
 <Conversation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
+<Emotion name="GREAT">
+
+	<Step name="ALONE">
+		<Sentence Category="GENERAL">Hey Pal!</Sentence>
+		<Sentence Category="GENERAL">I'm alone, but i'm feeling so great!</Sentence>
+	</Step>
+
+	<Step name="GREETING">
+		<Sentence Category="GENERAL">Hi $[NAME]!</Sentence>
+		<Sentence Category="GENERAL">Hi bro!</Sentence>
+	</Step>
+	
+	<Step name="SPEAK">
+		<Sentence Category="WEATHER">This is a great day</Sentence>
+		<Sentence Category="WEATHER">F**k Yeah!</Sentence>
+	</Step>
+	
+	<Step name="QUESTION">
+		<Sentence Category="FEELING">Hey how you doing?</Sentence>
+		<Sentence Category="SOUND">Do you like this song?</Sentence>
+		<Sentence Category="CHARACTER_NAME">what is my name?</Sentence>
+	</Step>
+	
+	<Step name="RESPONSE">
+		<Sentence Category="FEELING">Great, thank you!</Sentence>
+		<Sentence Category="FEELING">Great!</Sentence>
+		<Sentence Category="SOUND">I can heard everything!</Sentence>
+		<Sentence Category="CHARACTER_NAME">$[NAME]!</Sentence>
+	</Step>
+	
+	<Step name="GOODBYE">
+		<Sentence Category="GENERAL">Goodbye!</Sentence>
+		<Sentence Category="GENERAL">See ya</Sentence>
+		<Sentence Category="FEELING">I'm feel great!</Sentence>
+		<Sentence Category="FEELING">I'm so good!</Sentence>
+	</Step>
+	
+	<Step name="PRIMITIVE">
+		<Sentence Category="HUNGER">I'm hungry!</Sentence>
+		<Sentence Category="HYGIENA">Is there some water for washing me?</Sentence>
+		<Sentence Category="FUN">I can play all by myself</Sentence>
+		<Sentence Category="SOCIAL">Allo?</Sentence>
+	</Step>
+	
+</Emotion>
+
 <Emotion name="FRIENDLY">
 
 	<Step name="ALONE">
@@ -39,22 +85,131 @@
 		<Sentence Category="GENERAL">See ya</Sentence>
 	</Step>
 	
+	<Step name="PRIMITIVE">
+		<Sentence Category="HUNGER">I'm so hungry...</Sentence>
+		<Sentence Category="HYGIENA">I need a good bath!</Sentence>
+		<Sentence Category="FUN">Please, let me play!</Sentence>
+		<Sentence Category="SOCIAL">I realy need to talk to somebody...</Sentence>
+	</Step>
+	
 </Emotion>
 
+<Emotion name="NORMAL">
 
-<Emotion name="WICKED">
-	
 	<Step name="ALONE">
-		<Sentence>Mouahahah!</Sentence>
+		<Sentence Category="GENERAL">I'm... Alone...</Sentence>
 	</Step>
 
 	<Step name="GREETING">
-		<Sentence>What do you want?</Sentence>
-		<Sentence>Where am I?</Sentence>
+		<Sentence Category="GENERAL">Hello $[NAME]</Sentence>
+	</Step>
+	
+	<Step name="SPEAK">
+		<Sentence Category="WEATHER">I like when it's raining</Sentence>
+		<Sentence Category="FEELING">I'm feel normal</Sentence>
+	</Step>
+	
+	<Step name="QUESTION">
+		<Sentence Category="FEELING">How are you?</Sentence>
+		<Sentence Category="SOUND">Did you heard that?</Sentence>
+		<Sentence Category="CHARACTER_NAME">what is my name?</Sentence>
+	</Step>
+	
+	<Step name="RESPONSE">
+		<Sentence Category="FEELING">Fine, thank you!</Sentence>
+		<Sentence Category="SOUND">Yes, I heard!</Sentence>
+		<Sentence Category="CHARACTER_NAME">$[NAME]</Sentence>
 	</Step>
 	
 	<Step name="GOODBYE">
-		<Sentence>...</Sentence>
+		<Sentence Category="GENERAL">Goodbye</Sentence>
+	</Step>
+	
+	<Step name="PRIMITIVE">
+		<Sentence Category="HUNGER">I'm hungry...</Sentence>
+		<Sentence Category="HYGIENA">I need a bath</Sentence>
+		<Sentence Category="FUN">Can I play?</Sentence>
+		<Sentence Category="SOCIAL">Bla bla bla... Yeah, talking to myself...</Sentence>
+	</Step>
+	
+</Emotion>
+
+<Emotion name="BAD">
+
+	<Step name="ALONE">
+		<Sentence Category="GENERAL">I'm... Afraid...</Sentence>
+	</Step>
+
+	<Step name="GREETING">
+		<Sentence Category="GENERAL">Hello...</Sentence>
+	</Step>
+	
+	<Step name="SPEAK">
+		<Sentence Category="WEATHER">I don't care about the weather</Sentence>
+		<Sentence Category="FEELING">I'm feel terrible</Sentence>
+	</Step>
+	
+	<Step name="QUESTION">
+		<Sentence Category="FEELING">How are you?</Sentence>
+		<Sentence Category="SOUND">Did you heard that?</Sentence>
+		<Sentence Category="CHARACTER_NAME">what is my horrible name?</Sentence>
+	</Step>
+	
+	<Step name="RESPONSE">
+		<Sentence Category="FEELING">Not well...</Sentence>
+		<Sentence Category="SOUND">I don't want to listen anything</Sentence>
+		<Sentence Category="CHARACTER_NAME">$[NAME] I suppose...</Sentence>
+	</Step>
+	
+	<Step name="GOODBYE">
+		<Sentence Category="GENERAL">Goodbye</Sentence>
+	</Step>
+	
+	<Step name="PRIMITIVE">
+		<Sentence Category="HUNGER">Give me some food!</Sentence>
+		<Sentence Category="HYGIENA">Wash me!</Sentence>
+		<Sentence Category="FUN">Play with me!</Sentence>
+		<Sentence Category="SOCIAL">I don't want to talk to anybody</Sentence>
+	</Step>
+	
+</Emotion>
+
+<Emotion name="WICKED">
+
+	<Step name="ALONE">
+		<Sentence Category="GENERAL">I like when i'm alone!</Sentence>
+	</Step>
+
+	<Step name="GREETING">
+		<Sentence Category="GENERAL">I don't want to know you!</Sentence>
+	</Step>
+	
+	<Step name="SPEAK">
+		<Sentence Category="WEATHER">Sunny, rainny, whatever!</Sentence>
+		<Sentence Category="FEELING">I feel like if i don't need anyone</Sentence>
+	</Step>
+	
+	<Step name="QUESTION">
+		<Sentence Category="FEELING">Will you tell me how you feel?</Sentence>
+		<Sentence Category="SOUND">What is this sound?!</Sentence>
+		<Sentence Category="CHARACTER_NAME">Tell my name or I kill you!</Sentence>
+	</Step>
+	
+	<Step name="RESPONSE">
+		<Sentence Category="FEELING">Leave me alone!</Sentence>
+		<Sentence Category="SOUND">I don't want to talk with you!</Sentence>
+		<Sentence Category="CHARACTER_NAME">$[NAME] stupid animal!</Sentence>
+	</Step>
+	
+	<Step name="GOODBYE">
+		<Sentence Category="GENERAL">...</Sentence>
+	</Step>
+	
+	<Step name="PRIMITIVE">
+		<Sentence Category="HUNGER">Give me some food NOW!</Sentence>
+		<Sentence Category="HYGIENA">Wash me NOW!</Sentence>
+		<Sentence Category="FUN">Play with me NOW!</Sentence>
+		<Sentence Category="SOCIAL">I don't want to talk to ANYBODY</Sentence>
 	</Step>
 	
 </Emotion>

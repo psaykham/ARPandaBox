@@ -6,7 +6,10 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 {
 	public enum EmotionType
 	{
+		GREAT,
 		FRIENDLY,
+		NORMAL,
+		BAD,
 		WICKED,
 	}
 	
@@ -14,10 +17,10 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		HUNGER,
 		HYGIENE,
-		ENERGY,
-		BLADDER,
 		FUN,
 		SOCIAL,
+		ENERGY,
+		BLADDER,
 	};
 	
 	public string Name;
@@ -26,7 +29,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public float EyesRadius = 20f;
 	public GameObject Wireframe;
 	public GameObject m_environment;
-	public GameObject m_statusBarPrefab;
 	
 	// Commmunication
 	private ConversationManager.ConversationStep m_currentConversationStep;
@@ -52,12 +54,14 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	public Transform Target { get {return m_target;} set{m_target = value;}}
 	
 	// Status Bar
-	private GameObject[] m_listStatusBar = new GameObject[2];
+	private GameObject[] m_listStatusBar = new GameObject[4];
+	public GameObject[] StatusBarList {get{return m_listStatusBar;}}
 	private Coroutine statusBarCoRoutine = null;
 	
 	void Awake()
 	{	
-		// Pupil
+		
+		CurrentEmotion = (EmotionType)UnityEngine.Random.Range(0,3);
 		m_currentConversationStep = ConversationManager.ConversationStep.GREETING;
 		
 		if(Shape != null)
@@ -71,8 +75,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			// Mouth
 			m_mouth = Shape.Find("Head/Mouth").GetComponent<UIStateToggleBtn>();
 		}
-		
-		//InitNeeds();
 	}
 	
     void Start()
@@ -88,24 +90,62 @@ public class Character : MonoBehaviour, ITrackableEventHandler
     }
 	
 	// Init Needs
-	private void InitNeeds()
+	public void InitNeeds()
 	{
 		StartCoroutine(UpdateHunger());
 		StartCoroutine(UpdateHygiene());
+		StartCoroutine(UpdateFun());
+		StartCoroutine(UpdateSocial());
 	}
 	
 	private IEnumerator UpdateHunger()
 	{
-		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
+		yield return new WaitForSeconds(UnityEngine.Random.Range(200, 1000) / 100f);
 		Eat(-1);
 		yield return StartCoroutine(UpdateHunger());
 	}
 	
 	private IEnumerator UpdateHygiene()
 	{
-		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
+		yield return new WaitForSeconds(UnityEngine.Random.Range(1000, 2000) / 100f);
 		Clean(-1);
 		yield return StartCoroutine(UpdateHygiene());
+	}
+	
+	private IEnumerator UpdateFun()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(500, 600) / 100f);
+		Fun(-1);
+		yield return StartCoroutine(UpdateFun());
+	}
+	
+	private IEnumerator UpdateSocial()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(800, 1200) / 100f);
+		Social(-1);
+		yield return StartCoroutine(UpdateSocial());
+	}
+	
+	// Eat some food
+	public void Eat(int amount)
+	{
+		m_hungrer = Mathf.Clamp(m_hungrer + (amount / 100f), 0f, 1f);
+	}
+	
+	// It cleans itself
+	public void Clean(int amount)
+	{
+		m_hygiene = Mathf.Clamp(m_hygiene + (amount / 100f), 0f, 1f);
+	}
+	
+	public void Fun(int amount)
+	{
+		m_fun = Mathf.Clamp(m_fun + (amount / 100f), 0f, 1f);
+	}
+	
+	public void Social(int amount)
+	{
+		m_social = Mathf.Clamp(m_social + (amount / 100f), 0f, 1f);
 	}
 	
 	// Event trackable
@@ -126,6 +166,7 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		UpdateEyes();
 		UpdateMouth();
+		UpdatePrimitive();
 	}
 	
 	// Update pupil position
@@ -137,7 +178,9 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 			{
 				Vector3 eyePosition = m_target.position - m_eyeList[i].transform.position;
 				eyePosition.Normalize();
-				m_eyeList[i].transform.localPosition = eyePosition * EyesRadius;	
+				eyePosition *= EyesRadius;
+				eyePosition.z = -2f;
+				m_eyeList[i].transform.localPosition = eyePosition;	
 			}
 		}
 	}
@@ -150,17 +193,42 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 		}
 	}
 	
+	private void UpdatePrimitive()
+	{
+		float humor = m_hungrer + m_hygiene + m_fun + m_social;
+		if(humor >= 3.5f)
+		{
+			CurrentEmotion = EmotionType.GREAT;
+		}
+		else if(humor > 2.5f && humor < 3.5f)
+		{
+			CurrentEmotion = EmotionType.FRIENDLY;	
+		}
+		else if(humor >= 1.5f && humor <= 2.5f)
+		{
+			CurrentEmotion = EmotionType.NORMAL;	
+		}
+		else if(humor > 0.5f && humor < 1.5f)
+		{
+			CurrentEmotion = EmotionType.BAD;	
+		}
+		else
+		{
+			CurrentEmotion = EmotionType.WICKED;		
+		}
+	}
+	
 	private IEnumerator EyeAlive()
 	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 500) / 100f);
 		if(m_isVisible)
 		{
 			print("EyeAlive");
-			yield return new WaitForSeconds(UnityEngine.Random.Range(100, 500) / 100f);
 			SetVisibleEyes(false);
 			yield return new WaitForSeconds(0.25f);
 			SetVisibleEyes(true);
-			yield return StartCoroutine(EyeAlive());
 		}
+		yield return StartCoroutine(EyeAlive());
 		
 	}
 	
@@ -169,18 +237,6 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	{
 		for(int i=0; i<m_eyeList.Count; i++)
 			Misc.SetRendererActive(m_eyeList[i].transform, isVisible);
-	}
-	
-	// Eat some food
-	public void Eat(int amount)
-	{
-		m_hungrer = Mathf.Clamp(m_hungrer + (amount / 100f), 0f, 1f);
-	}
-	
-	// It cleans itself
-	public void Clean(int amount)
-	{
-		m_hygiene = Mathf.Clamp(m_hygiene + (amount / 100f), 0f, 1f);
 	}
 	
 	// Add the character for the interaction
@@ -192,10 +248,9 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	private IEnumerator OnTrackingFoundProcess()
 	{
 		yield return StartCoroutine(CheckInteractionManagerPresence());
-		InitNeeds();
-		CreateStatusBar();
 		m_isVisible = true;
-		InteractionManager.Instance.AddCharacter(this); 
+		Character character = this;
+		InteractionManager.Instance.AddCharacter(ref character); 
 	}
 	
 	// Remove the character from the scene
@@ -217,49 +272,47 @@ public class Character : MonoBehaviour, ITrackableEventHandler
 	}
 	
 	//Update the StatusBar
-	public IEnumerator UpdateStatusBar()
+	public void UpdateStatusBar()
 	{
-		yield return new WaitForSeconds(UnityEngine.Random.Range(100, 300) / 100f);
-		
-		if(m_statusBarPrefab != null) 
+		for(int i=0; i<m_listStatusBar.Length; i++) 
 		{
-			for(int i=0; i<m_listStatusBar.Length; i++) 
+			if(m_listStatusBar[i] != null) 
 			{
-				if(m_listStatusBar[i] != null) 
-				{
-					Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
-					statusBarFull.localScale = 
-						GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
-							m_listStatusBar[i].transform.GetChild(2));
-				}
+				Transform statusBarFull = m_listStatusBar[i].transform.GetChild(1);
+				statusBarFull.localScale = 
+					GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
+						m_listStatusBar[i].transform.GetChild(2));
 			}
-		}
-		
-		yield return StartCoroutine(UpdateStatusBar());
+		}	
 	}
 	
 	// Create all status bar
 	public void CreateStatusBar()
 	{
-		if(m_statusBarPrefab != null) 
+		for(int i=0; i<m_listStatusBar.Length; i++) 
 		{
-			for(int i=0; i<m_listStatusBar.Length; i++) 
+			m_listStatusBar[i] = (GameObject)Instantiate(GUIManager.Instance.m_statusBarPrefab);
+			m_listStatusBar[i].transform.parent = GUIManager.Instance.StatusBarTransform;
+			m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
+			switch(i)
 			{
-				m_listStatusBar[i] = (GameObject)Instantiate(m_statusBarPrefab);
-				m_listStatusBar[i].transform.parent = GUIManager.Instance.ScreenPosition.transform;
-				m_listStatusBar[i].GetComponentInChildren<SpriteText>().Text = GetCorrespondingAttributesName(i);
-				if(i == 0) {
-					m_listStatusBar[i].transform.localPosition = new Vector3(10, 0, 0);
-				} else {
-					m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 30, 0);
-				}
+				case 0:
+				m_listStatusBar[i].transform.localPosition = new Vector3(10, 0, 0);
+				break;
 				
-				m_listStatusBar[i].transform.GetChild(1).localScale = 
-					GetCurrentStatusBarScale(GetCorrespondingAttributes(i), 
-						m_listStatusBar[i].transform.GetChild(2));
+				case 1:
+				m_listStatusBar[i].transform.localPosition = new Vector3(10, m_listStatusBar[i-1].transform.localPosition.y - 30, 0);
+				break;
+				
+				case 2:
+				m_listStatusBar[i].transform.localPosition = new Vector3(250, 0, 0);
+				break;
+				
+				case 3:
+				m_listStatusBar[i].transform.localPosition = new Vector3(250, m_listStatusBar[i-1].transform.localPosition.y - 30, 0);
+				break;
 			}
 		}
-		statusBarCoRoutine = StartCoroutine(UpdateStatusBar());
 	}
 	
 	// Returns the current status bar scale

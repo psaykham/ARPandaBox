@@ -14,6 +14,7 @@ public class ConversationManager : Singleton<ConversationManager>
 		QUESTION,
 		RESPONSE,
 		GOODBYE,
+		PRIMITIVE,
 	}
 	
 	public List<ConversationStep> m_conversationSpeakAvaible;
@@ -52,8 +53,8 @@ public class ConversationManager : Singleton<ConversationManager>
 	private void CheckCharacterAlone(string characterName)
 	{
 		// Alone
-		if(InteractionManager.Instance.CharacterList.Count < 2)
-		{
+		if(InteractionManager.Instance.CharacterList.Count < 2 && !m_characterIsSpeaking[characterName])
+		{					
 			switch(InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep)
 			{
 				case ConversationStep.GREETING:
@@ -61,6 +62,7 @@ public class ConversationManager : Singleton<ConversationManager>
 				break;
 				
 				case ConversationStep.ALONE:
+				InteractionManager.Instance.CharacterList[characterName].Social(-10);
 				SetConversationStep(characterName, ConversationStep.NONE);
 				break;
 			}
@@ -70,20 +72,28 @@ public class ConversationManager : Singleton<ConversationManager>
 	private void CheckCharacterMute(string characterName)
 	{
 		// The character doesn't speak anymore
-		if(InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep == ConversationStep.NONE)
-		{	
-			int indexCharacterRandom = UnityEngine.Random.Range(0, InteractionManager.Instance.CharacterList.Count);
-			int indexStepRandom = UnityEngine.Random.Range(0, m_conversationSpeakAvaible.Count);
-			Transform characterTransform = InteractionManager.Instance.CharacterListTransfrom.GetChild(indexCharacterRandom);
-			string nameCharacterRandom = characterTransform.GetComponent<Character>().Name;
-			SetConversationStep(nameCharacterRandom, m_conversationSpeakAvaible[indexStepRandom]);
-			
-			foreach(KeyValuePair<string, Character> kvp in InteractionManager.Instance.CharacterList)
-			{
-				if(kvp.Key != characterName)
-					UpdateCharacterStep(kvp.Key);	
+		Character character = InteractionManager.Instance.CharacterList[characterName];
+		if(InteractionManager.Instance.CharacterList.Count > 1)
+		{
+			if(character.CurrentConversationStep == ConversationStep.NONE )
+			{				
+				int indexCharacterRandom = UnityEngine.Random.Range(0, InteractionManager.Instance.CharacterList.Count);
+				int indexStepRandom = UnityEngine.Random.Range(0, m_conversationSpeakAvaible.Count);
+				Transform characterTransform = InteractionManager.Instance.CharacterListTransfrom.GetChild(indexCharacterRandom);
+				string nameCharacterRandom = characterTransform.GetComponent<Character>().Name;
+				SetConversationStep(nameCharacterRandom, m_conversationSpeakAvaible[indexStepRandom]);
+				
+				foreach(KeyValuePair<string, Character> kvp in InteractionManager.Instance.CharacterList)
+				{
+					if(kvp.Key != characterName)
+						UpdateCharacterStep(kvp.Key);	
+				}
 			}
-		}	
+		}
+		else
+		{
+			character.CurrentConversationStep = ConversationStep.ALONE;	
+		}
 	}
 	
 	// Update step for the conversation
@@ -98,7 +108,8 @@ public class ConversationManager : Singleton<ConversationManager>
 			break;
 			
 			case ConversationStep.ALONE:
-			SetConversationStep(characterName, ConversationStep.GREETING);
+			if(InteractionManager.Instance.CharacterList.Count > 1)
+				SetConversationStep(characterName, ConversationStep.GREETING);
 			break;
 			
 			case ConversationStep.GREETING:
@@ -114,11 +125,14 @@ public class ConversationManager : Singleton<ConversationManager>
 			SetConversationStep(characterName, ConversationStep.NONE);
 			break;
 		}
+		print("---new:"+ InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep);
+		
 	}
 	
 	private void SetConversationStep(string characterName, ConversationStep conversationStep)
 	{
-		InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep = conversationStep;
+		if(InteractionManager.Instance.CharacterList[characterName] != null)
+			InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep = conversationStep;
 	}
 	
 	// Check if something is already speaking
@@ -170,7 +184,6 @@ public class ConversationManager : Singleton<ConversationManager>
 	// A character is speaking
 	private IEnumerator Speak(string characterName)
 	{	
-		//print(characterName+": " + InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep);
 		if(!IsSomebodySpeaking() && !m_characterHadSpoken[characterName])
 		{
 			m_cursorConversation++;
@@ -179,6 +192,10 @@ public class ConversationManager : Singleton<ConversationManager>
 			yield return new WaitForSeconds(m_timeInteraction);
 			if(InteractionManager.Instance.CharacterList.ContainsKey(characterName))
 			{	
+				if(InteractionManager.Instance.CharacterList.Count > 1)
+					InteractionManager.Instance.CharacterList[characterName].Social(10);
+				
+				print(characterName+": " + InteractionManager.Instance.CharacterList[characterName].CurrentConversationStep);
 				DisplaySentence(characterName);
 				m_characterIsSpeaking[characterName] = false;
 				AllowOtherCharacterToSpeak(characterName);
@@ -198,6 +215,16 @@ public class ConversationManager : Singleton<ConversationManager>
 			else
 				m_characterHadSpoken[kvp.Key] = true;
 		}
+			
+		if(InteractionManager.Instance.CharacterList.Count < 2)
+			StartCoroutine(WaitForSpeakAlone(characterName));
+	}
+	
+	private IEnumerator WaitForSpeakAlone(string characterName)
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.Range(300,3000) / 100f);
+		if(InteractionManager.Instance.CharacterList.Count < 2)
+			m_characterHadSpoken[characterName] = false;
 	}
 	
 	// Display the character sentence

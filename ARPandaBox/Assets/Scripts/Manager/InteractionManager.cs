@@ -11,6 +11,8 @@ public class InteractionManager : Singleton<InteractionManager>
 	public GUIManager m_guiManager;
 	public ConversationManager m_conversationManager;
 	public EnvironmentManager m_environmentManager;
+	public GameObject m_foodPrefab;
+	public GameObject m_ballPrefab;
 	
 	private Dictionary<string, Character> m_characterList = new Dictionary<string, Character>();
 	public Dictionary<string, Character> CharacterList {get {return m_characterList;}}
@@ -31,13 +33,16 @@ public class InteractionManager : Singleton<InteractionManager>
 	
 	void Update () 
 	{
-	
 	}
 
-	public void AddCharacter(Character character)
-	{
+	public void AddCharacter(ref Character character)
+	{		
+		character.InitNeeds();
 		if(m_mainCharacter == null)
+		{
 			m_mainCharacter = character;
+			character.CreateStatusBar();
+		}
 		
 		print ("AddCharacter");
 		if(!m_characterList.ContainsKey(character.Name))
@@ -47,6 +52,22 @@ public class InteractionManager : Singleton<InteractionManager>
 			// Only instantiate environment if worldmarker is tracked
 			if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED)
 				m_environmentManager.LoadEnvironment(character.Name);
+		}
+		
+		if(m_characterList.Count > 1)
+		{
+			Dictionary<string, Character> m_characterListTmp = new Dictionary<string, Character>(m_characterList);
+			foreach(KeyValuePair<string, Character> kvp in m_characterListTmp)
+			{
+				string otherName = "";
+				foreach(KeyValuePair<string, Character> kvpCheck in m_characterList)
+				{
+					if(kvpCheck.Key != kvp.Key)
+						otherName = kvpCheck.Key;
+				}
+				
+				m_characterList[kvp.Key].Target = m_characterList[otherName].transform;
+			}
 		}
 	}
 	
@@ -60,4 +81,30 @@ public class InteractionManager : Singleton<InteractionManager>
 		
 		m_characterList.Remove(characterName);
 	}
+	
+	public void GiveFood()
+	{
+		if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED && m_mainCharacter != null)
+		{
+			Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
+			if(environment != null)
+			{
+				GameObject food = (GameObject)Instantiate(m_foodPrefab);	
+				food.transform.parent = environment;
+			}
+		}	
+	}
+	
+	public void GiveBall()
+	{
+		if(WorldMarker.GetComponent<TrackableBehaviour>().CurrentStatus == TrackableBehaviour.Status.TRACKED && m_mainCharacter != null)
+		{
+			Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
+			if(environment != null)
+			{
+				GameObject ball = (GameObject)Instantiate(m_ballPrefab);	
+				ball.transform.parent = environment;
+			}
+		}	
+	}	
 }

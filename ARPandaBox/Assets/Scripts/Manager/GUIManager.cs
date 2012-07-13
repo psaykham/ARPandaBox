@@ -26,11 +26,20 @@ public class GUIManager : Singleton<GUIManager>
 	public void DisplayMessage(string characterName, string message)
 	{	
 		GameObject messageObject = (GameObject)Instantiate(m_dialogBoxPrefab);
-		messageObject.transform.parent = InteractionManager.Instance.CharacterList[characterName].Wireframe.transform;
+		messageObject.transform.parent = InteractionManager.Instance.CharacterList[characterName].transform;
 		messageObject.transform.localPosition = m_dialogBoxOffet;
 		messageObject.GetComponentInChildren<SpriteText>().Text = message;
 		m_messageInstanceList.Add(messageObject);
 		StartCoroutine(RemoveMessage(messageObject));
+	}
+	
+	void Update()
+	{
+		Character mainCharacter = InteractionManager.Instance.MainCharacter;
+		if(mainCharacter != null)
+		{
+			mainCharacter.UpdateStatusBar();	
+		}
 	}
 	
 	// Simple  GUI with default system
