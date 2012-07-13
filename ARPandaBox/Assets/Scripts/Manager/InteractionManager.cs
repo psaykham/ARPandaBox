@@ -11,7 +11,7 @@ public class InteractionManager : Singleton<InteractionManager>
 	public GUIManager m_guiManager;
 	public ConversationManager m_conversationManager;
 	public EnvironmentManager m_environmentManager;
-	public GameObject m_foodPrefab;
+	public GameObject[] m_foodPrefab;
 	public GameObject m_ballPrefab;
 	
 	private Dictionary<string, Character> m_characterList = new Dictionary<string, Character>();
@@ -103,7 +103,7 @@ public class InteractionManager : Singleton<InteractionManager>
 				Transform environment = EnvironmentListTransform.Find(m_mainCharacter.Name);
 				if(environment != null)
 				{
-					GameObject food = (GameObject)Instantiate(m_foodPrefab);
+					GameObject food = (GameObject)Instantiate(m_foodPrefab[UnityEngine.Random.Range(0, m_foodPrefab.Length)]);
 					Vector3 direction = new Vector3(UnityEngine.Random.Range(-100, 100)/100f, 0f, UnityEngine.Random.Range(-100, 100)/100f);
 					direction.Normalize();
 					direction *= 3f;
