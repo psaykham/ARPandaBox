@@ -7,6 +7,7 @@ public class Pickup : MonoBehaviour
 	{
 		FOOD,
 		FUN,
+		HYGIENA,
 	}
 	public PickupType m_type;
 	public int m_amount;
@@ -46,6 +47,11 @@ public class Pickup : MonoBehaviour
 					case PickupType.FUN:
 					character.Fun(m_amount);
 					break;
+					
+					case PickupType.HYGIENA:
+					character.Clean(m_amount);
+					break;
+					
 				}
 			}
 		}
